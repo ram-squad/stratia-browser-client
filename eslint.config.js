@@ -389,7 +389,7 @@ export default [
 			"@typescript-eslint/ban-types": "error",
 			"@typescript-eslint/class-literal-property-style": ["error", "fields"],
 			"@typescript-eslint/consistent-generic-constructors": "off",
-			"@typescript-eslint/consistent-indexed-object-style": ["error", "record"],
+			"@typescript-eslint/consistent-indexed-object-style": ["warn", "index-signature"],
 			"@typescript-eslint/consistent-type-assertions": "off",
 			"@typescript-eslint/consistent-type-definitions": "off",
 			"@typescript-eslint/consistent-type-exports": [
