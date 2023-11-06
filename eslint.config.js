@@ -97,9 +97,9 @@ export default [
 			"no-unsafe-finally": "error",
 			"no-unsafe-negation": "error",
 			"no-unsafe-optional-chaining": "error",
-			"no-unused-private-class-members": "error",
+			"no-unused-private-class-members": "warn",
 			"no-unused-vars": [
-				"error",
+				"warn",
 				{vars: "all", args: "all", caughtErrors: "all", ignoreRestSiblings: false},
 			],
 			"no-use-before-define": [
@@ -237,7 +237,7 @@ export default [
 			],
 			"no-unneeded-ternary": ["error", {defaultAssignment: false}],
 			"no-unused-expressions": [
-				"error",
+				"warn",
 				{
 					allowShortCircuit: false,
 					allowTernary: false,
@@ -688,7 +688,7 @@ export default [
 			],
 			"no-unused-vars": "off",
 			"@typescript-eslint/no-unused-vars": [
-				"error",
+				"warn",
 				{vars: "all", args: "all", caughtErrors: "all", ignoreRestSiblings: false},
 			],
 			"no-use-before-define": "off",
@@ -817,7 +817,7 @@ export default [
 			// "svelte/no-immutable-reactive-statements": "error",
 			"svelte/no-reactive-functions": "error",
 			"svelte/no-reactive-literals": "error",
-			// "svelte/no-unused-class-name": ["error", {allowedClassNames: []}],
+			// "svelte/no-unused-class-name": ["warn", {allowedClassNames: []}],
 			"svelte/no-unused-svelte-ignore": "error",
 			"svelte/no-useless-mustaches": [
 				"error",
