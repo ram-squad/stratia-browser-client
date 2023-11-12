@@ -24,8 +24,8 @@ jobs:
       - name: Deploy to Docker Swarm
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: $SSH_DEPLOYMENT_HOST
-          username: $SSH_DEPLOYMENT_USERNAME
-          key: $SSH_DEPLOYMENT_PRIVATE_KEY
+          host: ${{env.SSH_DEPLOYMENT_HOST}}
+          username: ${{env.SSH_DEPLOYMENT_USERNAME}}
+          key: ${{env.SSH_DEPLOYMENT_PRIVATE_KEY}}
           script: |
             docker service update --image $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_REPOSITORY_NAME:$RELEASE_VERSION $SSH_DEPLOYMENT_DOCKER_SWARM_SERVICE_NAME
