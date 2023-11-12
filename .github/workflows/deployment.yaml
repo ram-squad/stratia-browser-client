@@ -28,4 +28,4 @@ jobs:
           username: ${{env.SSH_DEPLOYMENT_USERNAME}}
           key: ${{env.SSH_DEPLOYMENT_PRIVATE_KEY}}
           script: |
-            docker service update --image $DOCKER_REGISTRY_HOST/$DOCKER_REGISTRY_REPOSITORY_NAME:$RELEASE_VERSION $SSH_DEPLOYMENT_DOCKER_SWARM_SERVICE_NAME
+            docker service update --image ${{env.DOCKER_REGISTRY_HOST}}/${{env.DOCKER_REGISTRY_REPOSITORY_NAME}}:${{env.RELEASE_VERSION}} ${{env.SSH_DEPLOYMENT_DOCKER_SWARM_SERVICE_NAME}}
