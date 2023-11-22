@@ -1,6 +1,6 @@
 # sveltekit-app-template
 
-This is a template for a SvelteKit TypeScript project.
+This is a template for a SvelteKit TypeScript app.
 
 The following following tools have been configured:
 
