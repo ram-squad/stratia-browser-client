@@ -1,7 +1,7 @@
 *
-!src
-!package.json
 !package-lock.json
+!package.json
+!src
+!svelte.config.js
 !tsconfig.json
 !vite.config.ts
-!svelte.config.js

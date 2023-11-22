@@ -107,7 +107,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-      - name: Run build
+      - name: Run build check
         run: |
           npm run build:check
   build_docker_image:
