@@ -5,7 +5,7 @@ module.exports = {
 	endOfLine: "lf",
 	plugins: ["prettier-plugin-svelte"],
 	printWidth: 100,
-	quoteProps: "preserve",
+	quoteProps: "as-needed",
 	semi: true,
 	singleQuote: false,
 	svelteAllowShorthand: true,
