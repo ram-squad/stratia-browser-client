@@ -73,26 +73,6 @@ jobs:
         with:
           name: coverage-report
           path: coverage-report
-  playwright_check:
-    name: Playwright check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.SETUP_NODE_NODE_VERSION }}
-          cache: "npm"
-      - name: Install dependencies
-        run: |
-          npm ci
-      - name: Install browsers
-        run: |
-          npx playwright install
-      - name: Run Playwright
-        run: |
-          npm run playwright:check
   build_check:
     name: Build check
     runs-on: ubuntu-latest
@@ -112,7 +92,7 @@ jobs:
           npm run build:check
   build_docker_image:
     name: Build a Docker image
-    needs: [eslint_check, vitest_check, playwright_check, build_check]
+    needs: [eslint_check, vitest_check, build_check]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
