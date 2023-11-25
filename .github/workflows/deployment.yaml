@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Deployment
     env:
-      RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+      RELEASE_VERSION: ${{github.event.inputs.release_version}}
       DOCKER_REGISTRY_REPOSITORY_NAME: ${{vars.DOCKER_REGISTRY_REPOSITORY_NAME}}
       DOCKER_REGISTRY_HOST: ${{vars.DOCKER_REGISTRY_HOST}}
-      SSH_DEPLOYMENT_HOST: ${{ secrets.SSH_DEPLOYMENT_HOST }}
-      SSH_DEPLOYMENT_USERNAME: ${{ secrets.SSH_DEPLOYMENT_USERNAME }}
-      SSH_DEPLOYMENT_PRIVATE_KEY: ${{ secrets.SSH_DEPLOYMENT_PRIVATE_KEY }}
-      SSH_DEPLOYMENT_DOCKER_SWARM_SERVICE_NAME: ${{ secrets.SSH_DEPLOYMENT_DOCKER_SWARM_SERVICE_NAME }}
+      SSH_DEPLOYMENT_HOST: ${{secrets.SSH_DEPLOYMENT_HOST}}
+      SSH_DEPLOYMENT_USERNAME: ${{secrets.SSH_DEPLOYMENT_USERNAME}}
+      SSH_DEPLOYMENT_PRIVATE_KEY: ${{secrets.SSH_DEPLOYMENT_PRIVATE_KEY}}
+      SSH_DEPLOYMENT_DOCKER_SWARM_SERVICE_NAME: ${{secrets.SSH_DEPLOYMENT_DOCKER_SWARM_SERVICE_NAME}}
     steps:
       - name: Deploy to Docker Swarm
         uses: appleboy/ssh-action@v1.0.0

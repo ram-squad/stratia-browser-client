@@ -897,7 +897,8 @@ export default [
 			"prefer-rest-params": "error",
 			"prefer-spread": "error",
 			"prefer-template": "error",
-			"quote-props": ["warn", "as-needed"],
+			// Prettier will handle this.
+			"quote-props": "off",
 			quotes: "off",
 			radix: ["error", "always"],
 			"require-atomic-updates": "error",
