@@ -25,7 +25,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.SETUP_NODE_NODE_VERSION }}
+          node-version: ${{env.SETUP_NODE_NODE_VERSION}}
           cache: "npm"
       - name: git config
         run: |
@@ -36,15 +36,15 @@ jobs:
           npm ci
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          npm run release -- --verbose --increment=${{ github.event.inputs.release_type }} --ci
+          npm run release -- --verbose --increment=${{github.event.inputs.release_type}} --ci
       - name: Remember release version
         id: remember_release_version
         run: |
           echo "release_version=$(node -p 'require("./package.json").version')" >> $GITHUB_OUTPUT
     outputs:
-      release_version: ${{ steps.remember_release_version.outputs.release_version }}
+      release_version: ${{steps.remember_release_version.outputs.release_version}}
 
   build_docker_image:
     name: Build a Docker image
@@ -54,12 +54,12 @@ jobs:
       - name: Download release
         uses: robinraju/release-downloader@v1.8
         with:
-          tag: ${{ needs.release.outputs.release_version }}
+          tag: ${{needs.release.outputs.release_version}}
           tarBall: true
       - name: Unpack release
-        run: tar -xzf ./${{github.event.repository.name}}-${{ needs.release.outputs.release_version }}.tar.gz
+        run: tar -xzf ./${{github.event.repository.name}}-${{needs.release.outputs.release_version}}.tar.gz
       - name: Remove tarball
-        run: rm ./${{github.event.repository.name}}-${{ needs.release.outputs.release_version }}.tar.gz
+        run: rm ./${{github.event.repository.name}}-${{needs.release.outputs.release_version}}.tar.gz
       - name: Move the files to the current directory
         run: |
           shopt -s dotglob
@@ -68,13 +68,13 @@ jobs:
           rm -rf ./${{github.event.repository.owner.login}}-${{github.event.repository.name}}-*/
       - name: Build a Docker image
         run: |
-          docker build --tag=${{vars.DOCKER_REGISTRY_REPOSITORY_NAME}}:${{ needs.release.outputs.release_version }} --file=Dockerfile --build-arg="NODE_VERSION=${{ env.SETUP_NODE_NODE_VERSION }}" .
+          docker build --tag=${{vars.DOCKER_REGISTRY_REPOSITORY_NAME}}:${{needs.release.outputs.release_version}} --file=Dockerfile --build-arg="NODE_VERSION=${{env.SETUP_NODE_NODE_VERSION}}" .
       - name: Upload the Docker image as an artifact
         uses: ishworkh/container-image-artifact-upload@v1.0.0
         with:
-          image: ${{vars.DOCKER_REGISTRY_REPOSITORY_NAME}}:${{ needs.release.outputs.release_version }}
+          image: ${{vars.DOCKER_REGISTRY_REPOSITORY_NAME}}:${{needs.release.outputs.release_version}}
     outputs:
-      release_version: ${{ needs.release.outputs.release_version }}
+      release_version: ${{needs.release.outputs.release_version}}
 
   publish_to_docker_registry:
     name: Publish to Docker registry
@@ -84,7 +84,7 @@ jobs:
       - name: Download the built Docker image
         uses: ishworkh/container-image-artifact-download@v1.0.0
         with:
-          image: ${{vars.DOCKER_REGISTRY_REPOSITORY_NAME}}:${{ needs.build_docker_image.outputs.release_version }}
+          image: ${{vars.DOCKER_REGISTRY_REPOSITORY_NAME}}:${{needs.build_docker_image.outputs.release_version}}
       - name: Login to Docker registry
         uses: docker/login-action@v3
         with:
@@ -93,4 +93,4 @@ jobs:
           registry: ${{vars.DOCKER_REGISTRY_HOST}}
       - name: Push the Docker image to the registry
         run: |
-          docker push ${{vars.DOCKER_REGISTRY_HOST}}/${{vars.DOCKER_REGISTRY_REPOSITORY_NAME}}:${{ needs.build_docker_image.outputs.release_version }}
+          docker push ${{vars.DOCKER_REGISTRY_HOST}}/${{vars.DOCKER_REGISTRY_REPOSITORY_NAME}}:${{needs.build_docker_image.outputs.release_version}}
