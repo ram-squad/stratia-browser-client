@@ -33,7 +33,7 @@
 		"inlineSourceMap": false,
 		"inlineSources": false,
 		"isolatedModules": true,
-		"lib": [],
+		"lib": ["DOM"],
 		"listEmittedFiles": false,
 		"listFiles": false,
 		"maxNodeModuleJsDepth": 0,
