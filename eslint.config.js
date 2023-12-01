@@ -224,7 +224,7 @@ export default [
 			"@typescript-eslint/no-shadow": [
 				"error",
 				{
-					allow: ["event", "screen"],
+					allow: ["_"],
 					builtinGlobals: true,
 					hoist: "all",
 					ignoreFunctionTypeParameterNameValueShadow: false,
