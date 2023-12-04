@@ -1,5 +1,5 @@
 <script lang="ts" strictEvents>
-	import {loadPlayFromLocalStorage} from "./loadPlayFromLocalStorage";
+	import {loadPlayFromLocalStorage} from "$lib/play/loadPlayFromLocalStorage.ts";
 
 	export let playId: string;
 
