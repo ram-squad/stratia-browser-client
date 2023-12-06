@@ -62,7 +62,7 @@ export default [
 			"@typescript-eslint/comma-dangle": "off",
 			"@typescript-eslint/comma-spacing": "off",
 			"@typescript-eslint/consistent-generic-constructors": "off",
-			"@typescript-eslint/consistent-indexed-object-style": ["warn", "index-signature"],
+			"@typescript-eslint/consistent-indexed-object-style": "off",
 			"@typescript-eslint/consistent-type-assertions": "off",
 			"@typescript-eslint/consistent-type-definitions": "off",
 			"@typescript-eslint/consistent-type-exports": [
