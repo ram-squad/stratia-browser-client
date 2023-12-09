@@ -1,5 +1,5 @@
 import * as Zod from "zod";
 
-export const playSchema = Zod.object({
+export const playFromJSONSchema = Zod.object({
 	id: Zod.string(),
 });

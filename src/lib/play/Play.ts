@@ -1,3 +1,3 @@
-import type {playSchema} from "$lib/play/playSchema.ts";
+import type {playFromJSONSchema} from "$lib/play/playFromJSONSchema.ts";
 
-export type Play = Zod.infer<ReturnType<(typeof playSchema)["readonly"]>>;
+export type Play = Zod.infer<ReturnType<(typeof playFromJSONSchema)["readonly"]>>;
