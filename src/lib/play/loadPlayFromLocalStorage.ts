@@ -1,6 +1,6 @@
 import type {Play} from "$lib/play/Play.ts";
 import {computePlayLocalStorageItemKey} from "$lib/play/computePlayLocalStorageItemKey.ts";
-import {playFromJSONSchema} from "./playFromJSONSchema";
+import {playFromJSONSchema} from "$lib/play/playFromJSONSchema.ts";
 
 export function loadPlayFromLocalStorage(playId: string): Play {
 	const itemKey = computePlayLocalStorageItemKey(playId);
