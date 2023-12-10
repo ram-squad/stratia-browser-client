@@ -24,7 +24,7 @@
 		"svelte-preprocess": "5.1.1",
 		"testcontainers": "10.3.2",
 		"ts-essentials": "9.4.1",
-		"typescript": "5.3.2",
+		"typescript": "5.3.3",
 		"uuid": "9.0.1",
 		"vite": "4.5.1",
 		"vitest": "0.34.6",
