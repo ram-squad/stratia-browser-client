@@ -10,7 +10,7 @@
 		"@types/node": "20.10.3",
 		"@types/uuid": "9.0.7",
 		"@typescript-eslint/eslint-plugin": "6.13.1",
-		"@typescript-eslint/parser": "6.13.1",
+		"@typescript-eslint/parser": "6.13.2",
 		"eslint": "8.55.0",
 		"eslint-plugin-import": "2.29.0",
 		"eslint-plugin-svelte": "2.35.1",
