@@ -8,15 +8,19 @@
 
 	$: iconFontSizeStyle = `${(0.8 * layoutStylesCalculationPrecission).toString()}px`;
 
-	$: entityTransformStyleX = `calc(${(
+	$: entityTransformTranslateXStyle = `calc(${(
 		layoutStylesCalculationPrecission * entity.position.x
 	).toString()}px - 50%)`;
 
-	$: entityTransformStyleY = `calc(${(
+	$: entityTransformTranslateYStyle = `calc(${(
 		layoutStylesCalculationPrecission * entity.position.y
 	).toString()}px - 50%)`;
 
-	$: entityTransformStyle = `translate(${entityTransformStyleX}, ${entityTransformStyleY})`;
+	$: entityTransformTranslateStyle = `translate(${entityTransformTranslateXStyle}, ${entityTransformTranslateYStyle})`;
+
+	$: entityTransformRotateStyle = `rotate(${entity.directionRadians.toString()}rad)`;
+
+	$: entityTransformStyle = `${entityTransformTranslateStyle} ${entityTransformRotateStyle}`;
 
 	const eventDispatcher = createEventDispatcher<{
 		"icon-click": string;

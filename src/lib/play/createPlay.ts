@@ -7,6 +7,7 @@ export function createPlay(): Play {
 	return {
 		entities: [
 			{
+				directionRadians: -0.5,
 				id: generateNewEntityID(),
 				position: {
 					x: 0,
@@ -14,6 +15,7 @@ export function createPlay(): Play {
 				},
 			},
 			{
+				directionRadians: 1,
 				id: generateNewEntityID(),
 				position: {
 					x: 3,
