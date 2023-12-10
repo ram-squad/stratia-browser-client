@@ -43,7 +43,7 @@
 		"build:check": "svelte-kit sync && svelte-check --fail-on-warnings --tsconfig ./tsconfig.json",
 		"dev": "svelte-kit sync && vite dev",
 		"eslint:check": "svelte-kit sync && eslint --max-warnings 0 .",
-		"eslint:fix": "svelte-kit sync && eslint --fix .",
+		"eslint:fix": "svelte-kit sync && eslint --max-warnings 0 --fix .",
 		"formatting:check": "prettier --check .",
 		"formatting:fix": "prettier --write .",
 		"playwright:check": "svelte-kit sync && vite build && playwright test --pass-with-no-tests '.+\\.e2e\\.test\\.[ts|js|cjs|mjs]'",
