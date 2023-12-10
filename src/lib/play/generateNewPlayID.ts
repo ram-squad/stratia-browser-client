@@ -1,5 +1,5 @@
 import * as Uuid from "uuid";
 
-export function generateNewPlayId() {
+export function generateNewPlayID() {
 	return Uuid.v4();
 }

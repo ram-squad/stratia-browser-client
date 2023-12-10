@@ -1,6 +1,6 @@
 import type {Play} from "$lib/play/Play.ts";
 import {computePlayLocalStorageItemKey} from "$lib/play/computePlayLocalStorageItemKey.ts";
-import {playSchema} from "./playSchema";
+import {playFromJSONSchema} from "$lib/play/playFromJSONSchema.ts";
 
 export function loadPlayFromLocalStorage(playId: string): Play {
 	const itemKey = computePlayLocalStorageItemKey(playId);
@@ -8,5 +8,5 @@ export function loadPlayFromLocalStorage(playId: string): Play {
 	if (itemValue === null) {
 		throw new Error(`Play with id "${playId}" not found in local storage.`);
 	}
-	return playSchema.parse(JSON.parse(itemValue));
+	return playFromJSONSchema.parse(JSON.parse(itemValue));
 }
