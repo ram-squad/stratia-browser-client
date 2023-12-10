@@ -5,6 +5,7 @@ export function savePlayToLocalStorage(play: Play): void {
 	const itemKey = computePlayLocalStorageItemKey(play.id);
 
 	const itemValue = JSON.stringify({
+		entities: play.entities,
 		id: play.id,
 		tiles: play.tiles.map(({data, position}) => ({
 			data,

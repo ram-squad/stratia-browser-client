@@ -4,6 +4,7 @@ import {generateNewPlayID} from "$lib/play/generateNewPlayID.ts";
 
 export function createPlay(): Play {
 	return {
+		entities: [],
 		id: generateNewPlayID(),
 		tiles: generatePlayHexTiles(),
 	};
