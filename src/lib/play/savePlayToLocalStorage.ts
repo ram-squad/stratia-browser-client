@@ -4,5 +4,6 @@ import {computePlayLocalStorageItemKey} from "$lib/play/computePlayLocalStorageI
 export function savePlayToLocalStorage(play: Play): void {
 	const itemKey = computePlayLocalStorageItemKey(play.id);
 	const itemValue = JSON.stringify(play);
+
 	localStorage.setItem(itemKey, itemValue);
 }

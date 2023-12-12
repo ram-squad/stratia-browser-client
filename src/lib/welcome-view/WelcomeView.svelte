@@ -6,6 +6,7 @@
 
 	const handleStartNewPlayButtonClick = async () => {
 		const newPlay = createPlay();
+
 		savePlayToLocalStorage(newPlay);
 		await gotoPlay(newPlay.id);
 	};

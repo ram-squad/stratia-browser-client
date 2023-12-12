@@ -20,6 +20,7 @@ describe("Docker container", () => {
 				NODE_VERSION: dockerImageNodeVersion,
 			})
 			.build();
+
 		await container.start();
 	}, 100000);
 });
