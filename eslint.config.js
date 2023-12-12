@@ -9,6 +9,8 @@ import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import * as typescriptEslintParser from "@typescript-eslint/parser";
 // @ts-expect-error - No types available.
 import importEslintPlugin from "eslint-plugin-import";
+// @ts-expect-error - No types available.
+import sortDestructureKeysEslintPlugin from "eslint-plugin-sort-destructure-keys";
 import * as svelteEslintPlugin from "eslint-plugin-svelte";
 import * as svelteEslintParser from "svelte-eslint-parser";
 
@@ -45,6 +47,8 @@ export default [
 			"@typescript-eslint": typescriptEslintPlugin,
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			import: importEslintPlugin,
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			"sort-destructure-keys": sortDestructureKeysEslintPlugin,
 		},
 		rules: {
 			"@stylistic/lines-between-class-members": [
@@ -991,6 +995,12 @@ export default [
 			"require-yield": "error",
 			"return-await": "off",
 			semi: "off",
+			"sort-destructure-keys/sort-destructure-keys": [
+				"warn",
+				{
+					caseSensitive: true,
+				},
+			],
 			// eslint-plugin-import will handle this.
 			"sort-imports": "off",
 			"sort-keys": [
