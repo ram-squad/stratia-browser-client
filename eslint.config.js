@@ -2,6 +2,7 @@
 // https://eslint.org/blog/2022/08/new-config-system-part-1/
 // https://eslint.org/blog/2022/08/new-config-system-part-2/
 
+import stylisticEslintPlugin from "@stylistic/eslint-plugin";
 // @ts-expect-error - Satisfying TypeSript here would actually cause ESLint to load the config incorrectly.
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 // @ts-expect-error - Needs Node 16 module resolution, but we can't use that because of SvelteKit.
@@ -39,12 +40,98 @@ export default [
 	},
 	{
 		plugins: {
+			"@stylistic": stylisticEslintPlugin,
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			"@typescript-eslint": typescriptEslintPlugin,
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			import: importEslintPlugin,
 		},
 		rules: {
+			"@stylistic/lines-between-class-members": [
+				"warn",
+				{
+					enforce: [
+						{
+							blankLine: "always",
+							next: "*",
+							prev: "*",
+						},
+					],
+				},
+				{
+					exceptAfterOverload: false,
+					exceptAfterSingleLine: false,
+				},
+			],
+			"@stylistic/object-curly-newline": [
+				"warn",
+				{
+					ExportDeclaration: "never",
+					ImportDeclaration: "never",
+					ObjectExpression: {
+						consistent: true,
+						minProperties: 1,
+						multiline: true,
+					},
+					ObjectPattern: "never",
+				},
+			],
+			"@stylistic/padding-line-between-statements": [
+				"warn",
+				{
+					blankLine: "always",
+					next: "*",
+					prev: "*",
+				},
+				{
+					blankLine: "never",
+					next: "import",
+					prev: "import",
+				},
+				{
+					blankLine: "never",
+					next: "singleline-const",
+					prev: "singleline-const",
+				},
+				{
+					blankLine: "never",
+					next: "singleline-let",
+					prev: "singleline-const",
+				},
+				{
+					blankLine: "never",
+					next: "singleline-const",
+					prev: "singleline-let",
+				},
+				{
+					blankLine: "never",
+					next: "singleline-let",
+					prev: "singleline-let",
+				},
+				{
+					blankLine: "never",
+					next: "expression",
+					prev: "expression",
+				},
+				{
+					blankLine: "always",
+					next: "*",
+					prev: "multiline-expression",
+				},
+				{
+					blankLine: "always",
+					next: "multiline-expression",
+					prev: "*",
+				},
+			],
+			"@stylistic/spaced-comment": [
+				"warn",
+				"always",
+				{
+					exceptions: [],
+					markers: [],
+				},
+			],
 			"@typescript-eslint/adjacent-overload-signatures": "error",
 			"@typescript-eslint/array-type": [
 				"error",
@@ -928,7 +1015,6 @@ export default [
 			"space-before-blocks": "off",
 			"space-before-function-paren": "off",
 			"space-infix-ops": "off",
-			"spaced-comment": ["error", "always"],
 			// TypeScript has strict mode
 			strict: "off",
 			"symbol-description": "error",
@@ -1031,7 +1117,12 @@ export default [
 			"svelte/no-object-in-text-mustaches": "error",
 			"svelte/no-reactive-functions": "error",
 			"svelte/no-reactive-literals": "error",
-			"svelte/no-reactive-reassign": ["error", {props: true}],
+			"svelte/no-reactive-reassign": [
+				"error",
+				{
+					props: true,
+				},
+			],
 			"svelte/no-restricted-html-elements": "off",
 			"svelte/no-shorthand-style-property-overrides": "error",
 			"svelte/no-spaces-around-equal-signs-in-attribute": "off",
@@ -1050,7 +1141,12 @@ export default [
 					/* "ignoreProperties": [], */ ignorePrefixed: false,
 				},
 			],
-			"svelte/no-unused-class-name": ["warn", {allowedClassNames: []}],
+			"svelte/no-unused-class-name": [
+				"warn",
+				{
+					allowedClassNames: [],
+				},
+			],
 			"svelte/no-unused-svelte-ignore": "error",
 			"svelte/no-useless-mustaches": [
 				"error",
