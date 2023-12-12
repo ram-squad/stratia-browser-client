@@ -66,14 +66,11 @@ export default [
 			"@stylistic/object-curly-newline": [
 				"warn",
 				{
-					ExportDeclaration: "never",
-					ImportDeclaration: "never",
 					ObjectExpression: {
 						consistent: true,
 						minProperties: 1,
 						multiline: true,
 					},
-					ObjectPattern: "never",
 				},
 			],
 			"@stylistic/padding-line-between-statements": [
