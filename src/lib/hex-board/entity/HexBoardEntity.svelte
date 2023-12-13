@@ -3,6 +3,7 @@
 
 	export let entity: Entity;
 	export let layoutStylesCalculationPrecission: number;
+	export let isSelected: boolean;
 
 	$: iconFontSizeStyle = `${(0.8 * layoutStylesCalculationPrecission).toString()}px`;
 
@@ -18,7 +19,12 @@
 </script>
 
 <li class="hex-board-entity" style:transform={entityTransformStyle}>
-	<button class="hex-board-entity__icon" style:font-size={iconFontSizeStyle} type="button">
+	<button
+		class="hex-board-entity__icon"
+		class:hex-board-entity__icon--selected={isSelected}
+		style:font-size={iconFontSizeStyle}
+		type="button"
+	>
 		🧍
 	</button>
 </li>
@@ -38,5 +44,9 @@
 		padding-inline: 0;
 		border-width: 0;
 		background: none;
+	}
+	.hex-board-entity__icon--selected {
+		outline: 2px solid black;
+		background-color: hsla(0, 0%, 0%, 0.1);
 	}
 </style>

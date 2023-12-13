@@ -24,6 +24,7 @@
 		{#each entities as entity (entity.id)}
 			<HexBoardEntity
 				{entity}
+				isSelected={false}
 				layoutStylesCalculationPrecission={cellLayoutStylesCalculationPrecission}
 			/>
 		{/each}
