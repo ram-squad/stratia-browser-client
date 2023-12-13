@@ -1,6 +1,7 @@
 <script lang="ts" strictEvents>
 	import type {HexTileWithNeighbors} from "$lib/hex/HexTileWithNeighbors.ts";
 	import {computeSideStrokeColors} from "$lib/hex-board/tile/computeSideStrokeColors.ts";
+	import { string } from "zod";
 
 	export let hexTileWithNeighbors: HexTileWithNeighbors;
 	export let layoutStylesCalculationPrecission: number;
@@ -17,11 +18,15 @@
 	).toString()}px - 50%)`;
 
 	$: cellTransformStyle = `translate(${cellTransformStyleX}, ${cellTransformStyleY})`;
+	$: svgFillStyle = {
+		"Water": "blue",
+		"Dirt": "green",
+	}[hexTileWithNeighbors.tile.data.landType]
 </script>
 
 <li class="hex-board-cell" style:transform={cellTransformStyle}>
 	<svg
-		fill="gray"
+		fill={svgFillStyle}
 		style:height={svgHeightStyle}
 		viewBox="0 0 184.6 160"
 		xmlns="http://www.w3.org/2000/svg"

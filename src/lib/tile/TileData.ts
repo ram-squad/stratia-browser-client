@@ -1,1 +1,3 @@
-export type TileData = Readonly<Record<string, never>>;
+export type TileData = Readonly<{
+    landType:"Dirt"|"Water";
+}>;
