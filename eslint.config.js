@@ -860,7 +860,7 @@ export default [
 			"no-undef-init": "error",
 			"no-undefined": "off",
 			"no-underscore-dangle": [
-				"error",
+				"warn",
 				{
 					allow: [],
 					allowAfterSuper: false,
