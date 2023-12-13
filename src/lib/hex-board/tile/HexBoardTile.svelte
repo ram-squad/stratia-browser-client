@@ -17,11 +17,18 @@
 	).toString()}px - 50%)`;
 
 	$: cellTransformStyle = `translate(${cellTransformStyleX}, ${cellTransformStyleY})`;
+
+	$: svgFillStyle = (
+		{
+			dirt: "brown",
+			water: "blue",
+		} as const
+	)[hexTileWithNeighbors.tile.data.landType];
 </script>
 
 <li class="hex-board-cell" style:transform={cellTransformStyle}>
 	<svg
-		fill="gray"
+		fill={svgFillStyle}
 		style:height={svgHeightStyle}
 		viewBox="0 0 184.6 160"
 		xmlns="http://www.w3.org/2000/svg"
