@@ -17,7 +17,9 @@ export function createPlay(): Play {
 			if (distanceFromOrigin <= 5.3) {
 				if (Math.random() < distanceFromOrigin / 5) {
 					tiles.push({
-						data: {},
+						data: {
+							landType: Math.random() < 0.5 ? "water" : "dirt",
+						},
 						position: new HexTilePosition(x, y),
 					});
 				}
