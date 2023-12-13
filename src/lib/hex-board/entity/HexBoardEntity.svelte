@@ -1,5 +1,6 @@
 <script lang="ts" strictEvents>
 	import type {Entity} from "$lib/play/entities/Entity.ts";
+	import {createEventDispatcher} from "svelte";
 
 	export let entity: Entity;
 	export let layoutStylesCalculationPrecission: number;
@@ -16,12 +17,21 @@
 	).toString()}px - 50%)`;
 
 	$: entityTransformStyle = `translate(${entityTransformStyleX}, ${entityTransformStyleY})`;
+
+	const eventDispatcher = createEventDispatcher<{
+		"icon-click": string;
+	}>();
+
+	const handleIconClick = () => {
+		eventDispatcher("icon-click", entity.id);
+	};
 </script>
 
 <li class="hex-board-entity" style:transform={entityTransformStyle}>
 	<button
 		class="hex-board-entity__icon"
 		class:hex-board-entity__icon--selected={isSelected}
+		on:click={handleIconClick}
 		style:font-size={iconFontSizeStyle}
 		type="button"
 	>

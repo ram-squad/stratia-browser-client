@@ -11,6 +11,16 @@
 	const zoomFactor = 20;
 	const hexBoardScale = zoomFactor / cellLayoutStylesCalculationPrecission;
 	const hexBoardScaleStyle = hexBoardScale.toString();
+	let requestedEntitySelectionId: null | string = null;
+
+	$: selectedEntity =
+		requestedEntitySelectionId === null
+			? null
+			: entities.find((entity) => entity.id === requestedEntitySelectionId) ?? null;
+
+	const handleEntityClick = (event: CustomEvent<string>) => {
+		requestedEntitySelectionId = event.detail;
+	};
 </script>
 
 <div class="hex-board-no-scrollbar-wrapper">
@@ -24,8 +34,9 @@
 		{#each entities as entity (entity.id)}
 			<HexBoardEntity
 				{entity}
-				isSelected={false}
+				isSelected={selectedEntity !== null && selectedEntity.id === entity.id}
 				layoutStylesCalculationPrecission={cellLayoutStylesCalculationPrecission}
+				on:icon-click={handleEntityClick}
 			/>
 		{/each}
 	</ul>
