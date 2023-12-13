@@ -189,7 +189,6 @@ export default [
 			"@typescript-eslint/key-spacing": "off",
 			"@typescript-eslint/keyword-spacing": "off",
 			"@typescript-eslint/lines-around-comment": "off",
-			"@typescript-eslint/lines-between-class-members": "off",
 			"@typescript-eslint/member-delimiter-style": "off",
 			"@typescript-eslint/member-ordering": [
 				"warn",
@@ -710,7 +709,6 @@ export default [
 			"key-spacing": "off",
 			"keyword-spacing": "off",
 			"lines-around-comment": "off",
-			"lines-between-class-members": "off",
 			"logical-assignment-operators": "off",
 			"max-classes-per-file": ["error", 1],
 			"max-depth": "off",
