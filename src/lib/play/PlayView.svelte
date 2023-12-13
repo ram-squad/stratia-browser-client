@@ -10,7 +10,7 @@
 
 <main class="play-view">
 	<h1>Play "{play.id}"</h1>
-	<HexBoard hexGrid={new HexGrid(play.tiles)} />
+	<HexBoard entities={play.entities} hexGrid={new HexGrid(play.tiles)} />
 </main>
 
 <style lang="scss">
