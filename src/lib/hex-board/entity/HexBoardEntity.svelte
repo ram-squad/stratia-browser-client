@@ -18,7 +18,9 @@
 </script>
 
 <li class="hex-board-entity" style:transform={entityTransformStyle}>
-	<span style:font-size={iconFontSizeStyle}> 🧍 </span>
+	<button class="hex-board-entity__icon" style:font-size={iconFontSizeStyle} type="button">
+		🧍
+	</button>
 </li>
 
 <style lang="scss">
@@ -28,5 +30,13 @@
 		top: 50%;
 		display: grid;
 		place-items: center;
+	}
+
+	.hex-board-entity__icon {
+		cursor: pointer;
+		padding-block: 0;
+		padding-inline: 0;
+		border-width: 0;
+		background: none;
 	}
 </style>
