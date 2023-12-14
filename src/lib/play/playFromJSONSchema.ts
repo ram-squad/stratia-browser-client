@@ -1,4 +1,4 @@
-import {hexTileFromJSONSchema} from "$lib/play/hexTileFromJSONSchema.ts";
+import {hexTileFromJSONSchema} from "$lib/hex/hexTileFromJSONSchema.ts";
 import * as Zod from "zod";
 
 export const playFromJSONSchema = Zod.object({

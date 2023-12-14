@@ -1,8 +1,10 @@
 import type {HexTile} from "$lib/hex/HexTile.ts";
 import {HexTilePosition} from "$lib/hex/HexTilePosition.ts";
+import {tileDataFromJSONSchema} from "$lib/tile/tileDataFromJSONSchema";
 import * as Zod from "zod";
 
 export const hexTileFromJSONSchema = Zod.object({
+	data: tileDataFromJSONSchema,
 	position: Zod.object({
 		x: Zod.number(),
 		y: Zod.number(),
@@ -10,8 +12,8 @@ export const hexTileFromJSONSchema = Zod.object({
 })
 	.readonly()
 	.transform(
-		(hexTileJSON): HexTile => ({
-			data: {},
-			position: new HexTilePosition(hexTileJSON.position.x, hexTileJSON.position.y),
+		({data, position}): HexTile => ({
+			data,
+			position: new HexTilePosition(position.x, position.y),
 		}),
 	);

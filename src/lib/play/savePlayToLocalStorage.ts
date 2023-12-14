@@ -6,10 +6,11 @@ export function savePlayToLocalStorage(play: Play): void {
 
 	const itemValue = JSON.stringify({
 		id: play.id,
-		tiles: play.tiles.map((tile) => ({
+		tiles: play.tiles.map(({data, position}) => ({
+			data,
 			position: {
-				x: tile.position.inGridX,
-				y: tile.position.inGridY,
+				x: position.inGridX,
+				y: position.inGridY,
 			},
 		})),
 	});
