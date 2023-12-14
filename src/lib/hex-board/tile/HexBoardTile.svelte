@@ -20,8 +20,8 @@
 	$: cellTransformStyle = `translate(${cellTransformStyleX}, ${cellTransformStyleY})`;
 	$: svgFillStyle = {
 		"Water": "blue",
-		"Dirt": "green",
-	}[hexTileWithNeighbors.tile.data.landType]
+		"Dirt": "#008000",
+	}[hexTileWithNeighbors.tile.data.landType];
 </script>
 
 <li class="hex-board-cell" style:transform={cellTransformStyle}>
