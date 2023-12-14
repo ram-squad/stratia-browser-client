@@ -6,10 +6,12 @@ export const hexTileFromJSONSchema = Zod.object({
 	position: Zod.object({
 		x: Zod.number(),
 		y: Zod.number(),
-	}),
-}).transform(
-	(hexTileJSON): HexTile => ({
-		data: {},
-		position: new HexTilePosition(hexTileJSON.position.x, hexTileJSON.position.y),
-	}),
-);
+	}).readonly(),
+})
+	.readonly()
+	.transform(
+		(hexTileJSON): HexTile => ({
+			data: {},
+			position: new HexTilePosition(hexTileJSON.position.x, hexTileJSON.position.y),
+		}),
+	);

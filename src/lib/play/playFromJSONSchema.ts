@@ -3,5 +3,5 @@ import * as Zod from "zod";
 
 export const playFromJSONSchema = Zod.object({
 	id: Zod.string(),
-	tiles: Zod.array(hexTileFromJSONSchema),
-});
+	tiles: Zod.array(hexTileFromJSONSchema).readonly(),
+}).readonly();
