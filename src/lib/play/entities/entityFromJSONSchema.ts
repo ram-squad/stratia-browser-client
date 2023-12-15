@@ -5,4 +5,5 @@ export const entityFromJSONSchema = Zod.object({
 	directionRadians: Zod.number(),
 	id: Zod.string(),
 	position: entityPositionFromJSONSchema,
+	speedPerSecond: Zod.number(),
 }).readonly();

@@ -13,6 +13,7 @@ export function createPlay(): Play {
 					x: 0,
 					y: 0,
 				},
+				speedPerSecond: 2,
 			},
 			{
 				directionRadians: 1,
@@ -21,6 +22,7 @@ export function createPlay(): Play {
 					x: 3,
 					y: 1,
 				},
+				speedPerSecond: 1,
 			},
 		],
 		id: generateNewPlayID(),
