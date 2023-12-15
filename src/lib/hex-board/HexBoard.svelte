@@ -29,6 +29,7 @@
 		padding-inline-start: 0;
 		height: 100%;
 	}
+
 	.hex-board-no-scrollbar-wrapper {
 		overflow: hidden;
 	}
