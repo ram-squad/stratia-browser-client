@@ -8,7 +8,6 @@
 		"allowUnreachableCode": false,
 		"allowUnusedLabels": false,
 		"alwaysStrict": true,
-		"baseUrl": ".",
 		"checkJs": true,
 		"composite": false,
 		"declaration": true,
@@ -59,10 +58,6 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": false,
 		"outDir": "./dist",
-		"paths": {
-			"$lib": ["./src/lib"],
-			"$lib/*": ["./src/lib/*"]
-		},
 		"plugins": [],
 		"preserveConstEnums": true,
 		"preserveSymlinks": false,
