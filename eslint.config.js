@@ -3,9 +3,7 @@
 // https://eslint.org/blog/2022/08/new-config-system-part-2/
 
 import stylisticEslintPlugin from "@stylistic/eslint-plugin";
-// @ts-expect-error - Satisfying TypeSript here would actually cause ESLint to load the config incorrectly.
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
-// @ts-expect-error - Needs Node 16 module resolution, but we can't use that because of SvelteKit.
 import * as typescriptEslintParser from "@typescript-eslint/parser";
 // @ts-expect-error - No types available.
 import importEslintPlugin from "eslint-plugin-import";

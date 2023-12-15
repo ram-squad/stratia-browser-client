@@ -27,7 +27,6 @@
 		"extendedDiagnostics": false,
 		"forceConsistentCasingInFileNames": true,
 		"importHelpers": true,
-		"importsNotUsedAsValues": "error",
 		"incremental": false,
 		"inlineSourceMap": false,
 		"inlineSources": false,
@@ -36,9 +35,9 @@
 		"listEmittedFiles": false,
 		"listFiles": false,
 		"maxNodeModuleJsDepth": 0,
-		"module": "ES2022",
+		"module": "Node16",
 		"moduleDetection": "force",
-		"moduleResolution": "node",
+		"moduleResolution": "Node16",
 		"moduleSuffixes": [""],
 		"newLine": "lf",
 		"noEmit": true,
@@ -61,7 +60,6 @@
 		"plugins": [],
 		"preserveConstEnums": true,
 		"preserveSymlinks": false,
-		"preserveValueImports": false,
 		"removeComments": true,
 		"resolveJsonModule": false,
 		"resolvePackageJsonExports": false,
@@ -83,7 +81,7 @@
 		"types": [],
 		"useDefineForClassFields": true,
 		"useUnknownInCatchVariables": true,
-		"verbatimModuleSyntax": false
+		"verbatimModuleSyntax": true
 	},
 	"exclude": [
 		"**/.git/**",
