@@ -4,9 +4,9 @@
 	import PlayView from "$lib/play/PlayView.svelte";
 
 	const {page} = AppStores;
-	$: ({playId} = $page.params);
+	$: ({playID} = $page.params);
 </script>
 
-{#if playId !== undefined && AppEnvironment.browser}
-	<PlayView {playId} />
+{#if playID !== undefined && AppEnvironment.browser}
+	<PlayView {playID} />
 {/if}

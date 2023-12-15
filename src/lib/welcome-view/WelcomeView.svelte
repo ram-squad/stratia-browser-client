@@ -2,7 +2,7 @@
 	import {createPlay} from "$lib/play/createPlay.ts";
 	import {savePlayToLocalStorage} from "$lib/play/savePlayToLocalStorage.ts";
 
-	export let gotoPlay: (playId: string) => Promise<void>;
+	export let gotoPlay: (playID: string) => Promise<void>;
 
 	const handleStartNewPlayButtonClick = async () => {
 		const newPlay = createPlay();
