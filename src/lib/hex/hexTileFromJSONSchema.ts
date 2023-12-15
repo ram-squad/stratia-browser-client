@@ -1,6 +1,6 @@
 import type {HexTile} from "$lib/hex/HexTile.ts";
 import {HexTilePosition} from "$lib/hex/HexTilePosition.ts";
-import {tileDataFromJSONSchema} from "$lib/tile/tileDataFromJSONSchema";
+import {tileDataFromJSONSchema} from "$lib/tile/tileDataFromJSONSchema.ts";
 import * as Zod from "zod";
 
 export const hexTileFromJSONSchema = Zod.object({
