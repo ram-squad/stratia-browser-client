@@ -1,3 +1,3 @@
-export function computePlayLocalStorageItemKey(playId: string): string {
-	return `play/${playId}`;
+export function computePlayLocalStorageItemKey(playID: string): string {
+	return `play/${playID}`;
 }

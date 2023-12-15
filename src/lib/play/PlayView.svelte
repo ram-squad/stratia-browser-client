@@ -3,9 +3,9 @@
 	import HexBoard from "$lib/hex-board/HexBoard.svelte";
 	import {loadPlayFromLocalStorage} from "$lib/play/loadPlayFromLocalStorage.ts";
 
-	export let playId: string;
+	export let playID: string;
 
-	$: play = loadPlayFromLocalStorage(playId);
+	$: play = loadPlayFromLocalStorage(playID);
 </script>
 
 <main class="play-view">
