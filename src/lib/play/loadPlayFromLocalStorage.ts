@@ -4,6 +4,7 @@ import {playFromJSONSchema} from "$lib/play/playFromJSONSchema.ts";
 
 export function loadPlayFromLocalStorage(playID: string): Play {
 	const itemKey = computePlayLocalStorageItemKey(playID);
+
 	const itemValue = localStorage.getItem(itemKey);
 
 	if (itemValue === null) {

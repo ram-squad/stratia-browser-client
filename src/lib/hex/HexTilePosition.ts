@@ -11,6 +11,7 @@ export class HexTilePosition {
 
 	public constructor(inGridX: number, inGridY: number) {
 		this.inGridX = inGridX;
+
 		this.inGridY = inGridY;
 	}
 

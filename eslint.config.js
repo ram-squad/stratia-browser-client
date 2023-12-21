@@ -87,41 +87,6 @@ export default [
 					next: "import",
 					prev: "import",
 				},
-				{
-					blankLine: "never",
-					next: "singleline-const",
-					prev: "singleline-const",
-				},
-				{
-					blankLine: "never",
-					next: "singleline-let",
-					prev: "singleline-const",
-				},
-				{
-					blankLine: "never",
-					next: "singleline-const",
-					prev: "singleline-let",
-				},
-				{
-					blankLine: "never",
-					next: "singleline-let",
-					prev: "singleline-let",
-				},
-				{
-					blankLine: "never",
-					next: "expression",
-					prev: "expression",
-				},
-				{
-					blankLine: "always",
-					next: "*",
-					prev: "multiline-expression",
-				},
-				{
-					blankLine: "always",
-					next: "multiline-expression",
-					prev: "*",
-				},
 			],
 			"@stylistic/spaced-comment": [
 				"warn",
