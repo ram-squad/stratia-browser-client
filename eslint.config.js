@@ -919,7 +919,7 @@ export default [
 			"no-with": "error",
 			"object-curly-spacing": "off",
 			"object-shorthand": [
-				"error",
+				"warn",
 				"always",
 				{
 					avoidExplicitReturnArrows: false,
