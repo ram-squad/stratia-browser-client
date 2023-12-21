@@ -45,22 +45,23 @@
 
 <style lang="scss">
 	.hex-board-entity {
-		position: absolute;
-		left: 50%;
-		top: 50%;
 		display: grid;
+		left: 50%;
 		place-items: center;
+		position: absolute;
+		top: 50%;
 	}
 
 	.hex-board-entity__icon {
+		background: none;
+		border-width: 0;
 		cursor: pointer;
 		padding-block: 0;
 		padding-inline: 0;
-		border-width: 0;
-		background: none;
 	}
+
 	.hex-board-entity__icon--selected {
-		outline: 2px solid black;
-		background-color: hsla(0, 0%, 0%, 0.1);
+		background-color: hsl(0deg 0% 0% / 0.1);
+		outline: 2px solid hsl(0deg 0% 0% / 1);
 	}
 </style>
