@@ -31,7 +31,7 @@
 		"inlineSourceMap": false,
 		"inlineSources": false,
 		"isolatedModules": true,
-		"lib": ["DOM"],
+		"lib": ["DOM", "ES2022", "DOM.Iterable"],
 		"listEmittedFiles": false,
 		"listFiles": false,
 		"maxNodeModuleJsDepth": 0,
