@@ -59,9 +59,9 @@
 
 <style lang="scss">
 	.hex-board-cell {
-		position: absolute;
-		left: 50%;
-		top: 50%;
 		display: grid;
+		left: 50%;
+		position: absolute;
+		top: 50%;
 	}
 </style>

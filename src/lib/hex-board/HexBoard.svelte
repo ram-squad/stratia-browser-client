@@ -44,11 +44,10 @@
 
 <style lang="scss">
 	.hex-board {
-		list-style: none;
-		margin-block-start: 0;
-		margin-block-end: 0;
-		padding-inline-start: 0;
 		height: 100%;
+		list-style: none;
+		margin-block: 0 0;
+		padding-inline-start: 0;
 	}
 
 	.hex-board-no-scrollbar-wrapper {

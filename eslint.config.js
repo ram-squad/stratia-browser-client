@@ -1144,12 +1144,6 @@ export default [
 					/* "ignoreProperties": [], */ ignorePrefixed: false,
 				},
 			],
-			"svelte/no-unused-class-name": [
-				"warn",
-				{
-					allowedClassNames: [],
-				},
-			],
 			"svelte/no-unused-svelte-ignore": "error",
 			"svelte/no-useless-mustaches": [
 				"error",
@@ -1192,12 +1186,6 @@ export default [
 			],
 			"svelte/spaced-html-comment": ["error", "always"],
 			"svelte/system": "error",
-			"svelte/valid-compile": [
-				"error",
-				{
-					ignoreWarnings: false,
-				},
-			],
 			"svelte/valid-each-key": "error",
 			"svelte/valid-prop-names-in-kit-pages": "error",
 		},
