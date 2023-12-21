@@ -23,8 +23,11 @@
 
 	$: if (lastPlayID !== playID) {
 		play = loadPlayFromLocalStorage(playID);
+
 		clearInterval(tickIntervalID);
+
 		tickIntervalID = setupTickInterval();
+
 		lastPlayID = playID;
 	}
 

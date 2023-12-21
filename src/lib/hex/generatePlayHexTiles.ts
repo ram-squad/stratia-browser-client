@@ -32,6 +32,7 @@ export function generatePlayHexTiles(): readonly HexTile[] {
 			};
 
 			const radius = Math.random() * 10;
+
 			const landType = Math.random() < 0.3 ? "water" : "dirt";
 
 			return {
@@ -45,8 +46,11 @@ export function generatePlayHexTiles(): readonly HexTile[] {
 	 * TODO: The safe boundaries can be smaller than 2. Find the exact safe boundaries using math.
 	 */
 	const minX = 2 * Math.floor(Math.min(...circles.map(({center, radius}) => center.x - radius)));
+
 	const maxX = 2 * Math.ceil(Math.max(...circles.map(({center, radius}) => center.x + radius)));
+
 	const minY = 2 * Math.floor(Math.min(...circles.map(({center, radius}) => center.y - radius)));
+
 	const maxY = 2 * Math.ceil(Math.max(...circles.map(({center, radius}) => center.y + radius)));
 
 	for (let y = minY; y <= maxY; y++) {
