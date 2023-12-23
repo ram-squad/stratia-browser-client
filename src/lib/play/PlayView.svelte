@@ -14,6 +14,10 @@
 	let play = loadPlayFromLocalStorage(playID);
 
 	const camera: Camera = {
+		position: {
+			x: 0,
+			y: 0,
+		},
 		zoomFactor: 20,
 	};
 

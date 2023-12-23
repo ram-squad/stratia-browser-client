@@ -16,6 +16,16 @@
 
 	$: hexBoardScaleStyle = hexBoardScale.toString();
 
+	$: hexBoardTransformTranslateXStyle = `${(
+		-camera.position.x * cellLayoutStylesCalculationPrecission
+	).toString()}px`;
+
+	$: hexBoardTransformTranslateYStyle = `${(
+		-camera.position.y * cellLayoutStylesCalculationPrecission
+	).toString()}px`;
+
+	$: hexBoardTransformStyle = `translate(${hexBoardTransformTranslateXStyle}, ${hexBoardTransformTranslateYStyle})`;
+
 	let requestedEntitySelectionId: null | string = null;
 
 	$: selectedEntity =
@@ -29,7 +39,7 @@
 </script>
 
 <div class="hex-board-no-scrollbar-wrapper">
-	<ul class="hex-board" style:scale={hexBoardScaleStyle}>
+	<ul class="hex-board" style:scale={hexBoardScaleStyle} style:transform={hexBoardTransformStyle}>
 		{#each hexGrid.iterateHexTilesWithNeighbors() as hexTileWithNeighbors (`${hexTileWithNeighbors.tile.position.inGridX.toString()},${hexTileWithNeighbors.tile.position.inGridY.toString()}`)}
 			<HexBoardCell
 				{hexTileWithNeighbors}
