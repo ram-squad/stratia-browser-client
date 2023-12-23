@@ -2,6 +2,7 @@
 	import {HexGrid} from "$lib/hex/HexGrid.ts";
 	import HexBoard from "$lib/hex-board/HexBoard.svelte";
 	import {convertSecondsToMiliseconds} from "$lib/math/convertSecondsToMiliseconds.ts";
+	import type {Camera} from "$lib/play/camera/Camera.ts";
 	import {computePlayTick} from "$lib/play/computePlayTick.ts";
 	import {loadPlayFromLocalStorage} from "$lib/play/loadPlayFromLocalStorage.ts";
 	import {onDestroy} from "svelte";
@@ -11,6 +12,10 @@
 	const tickIntervalSeconds = 0.1;
 	let lastPlayID = playID;
 	let play = loadPlayFromLocalStorage(playID);
+
+	const camera: Camera = {
+		zoomFactor: 20,
+	};
 
 	const tick = () => {
 		play = computePlayTick(play, tickIntervalSeconds);
@@ -38,7 +43,7 @@
 
 <main class="play-view">
 	<h1>Play "{play.id}"</h1>
-	<HexBoard entities={play.entities} hexGrid={new HexGrid(play.tiles)} />
+	<HexBoard {camera} entities={play.entities} hexGrid={new HexGrid(play.tiles)} />
 </main>
 
 <style lang="scss">
