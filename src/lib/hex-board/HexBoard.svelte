@@ -5,6 +5,7 @@
 	import HexBoardCell from "$lib/hex-board/tile/HexBoardTile.svelte";
 	import type {Camera} from "$lib/play/camera/Camera.ts";
 	import type {Entity} from "$lib/play/entities/Entity.ts";
+	import type {Point} from "$lib/point/Point.ts";
 	import {createEventDispatcher} from "svelte";
 
 	export let hexGrid: HexGrid;
@@ -32,6 +33,7 @@
 
 	const dispatchEvent = createEventDispatcher<{
 		"dimensions-change": Dimensions;
+		"mouse-position-change": null | Point;
 	}>();
 
 	$: selectedEntity =
@@ -41,6 +43,32 @@
 
 	const handleEntityClick = (event: CustomEvent<string>) => {
 		requestedEntitySelectionId = event.detail;
+	};
+
+	const handleMousemove = (event: MouseEvent) => {
+		const hexBoardElement = event.currentTarget as HTMLDivElement;
+
+		const mousePosition: Point = {
+			x: event.clientX - hexBoardElement.getBoundingClientRect().left,
+			y: event.clientY - hexBoardElement.getBoundingClientRect().top,
+		};
+
+		dispatchEvent("mouse-position-change", mousePosition);
+	};
+
+	const handleMouseleave = () => {
+		dispatchEvent("mouse-position-change", null);
+	};
+
+	const handleMouseenter = (event: MouseEvent) => {
+		const hexBoardElement = event.currentTarget as HTMLDivElement;
+
+		const mousePosition: Point = {
+			x: event.clientX - hexBoardElement.getBoundingClientRect().left,
+			y: event.clientY - hexBoardElement.getBoundingClientRect().top,
+		};
+
+		dispatchEvent("mouse-position-change", mousePosition);
 	};
 
 	const observeDimensions = (element: HTMLDivElement) => {
@@ -65,7 +93,14 @@
 	};
 </script>
 
-<div class="hex-board-no-scrollbar-wrapper" use:observeDimensions>
+<div
+	class="hex-board-no-scrollbar-wrapper"
+	on:mouseenter={handleMouseenter}
+	on:mouseleave={handleMouseleave}
+	on:mousemove={handleMousemove}
+	role="presentation"
+	use:observeDimensions
+>
 	<ul class="hex-board" style:scale={hexBoardScaleStyle} style:transform={hexBoardTransformStyle}>
 		{#each hexGrid.iterateHexTilesWithNeighbors() as hexTileWithNeighbors (`${hexTileWithNeighbors.tile.position.inGridX.toString()},${hexTileWithNeighbors.tile.position.inGridY.toString()}`)}
 			<HexBoardCell
