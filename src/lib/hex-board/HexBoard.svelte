@@ -1,9 +1,11 @@
 <script lang="ts" strictEvents>
+	import type {Dimensions} from "$lib/dimensions/Dimensions.ts";
 	import type {HexGrid} from "$lib/hex/HexGrid.ts";
 	import HexBoardEntity from "$lib/hex-board/entity/HexBoardEntity.svelte";
 	import HexBoardCell from "$lib/hex-board/tile/HexBoardTile.svelte";
 	import type {Camera} from "$lib/play/camera/Camera.ts";
 	import type {Entity} from "$lib/play/entities/Entity.ts";
+	import {createEventDispatcher} from "svelte";
 
 	export let hexGrid: HexGrid;
 	export let entities: readonly Entity[];
@@ -28,6 +30,10 @@
 
 	let requestedEntitySelectionId: null | string = null;
 
+	const dispatchEvent = createEventDispatcher<{
+		"dimensions-change": Dimensions;
+	}>();
+
 	$: selectedEntity =
 		requestedEntitySelectionId === null
 			? null
@@ -36,9 +42,30 @@
 	const handleEntityClick = (event: CustomEvent<string>) => {
 		requestedEntitySelectionId = event.detail;
 	};
+
+	const observeDimensions = (element: HTMLDivElement) => {
+		const resizeObserver = new ResizeObserver((entries) => {
+			entries.forEach((entry) => {
+				const {height, width} = entry.contentRect;
+
+				dispatchEvent("dimensions-change", {
+					height,
+					width,
+				});
+			});
+		});
+
+		resizeObserver.observe(element);
+
+		return {
+			destroy: () => {
+				resizeObserver.disconnect();
+			},
+		};
+	};
 </script>
 
-<div class="hex-board-no-scrollbar-wrapper">
+<div class="hex-board-no-scrollbar-wrapper" use:observeDimensions>
 	<ul class="hex-board" style:scale={hexBoardScaleStyle} style:transform={hexBoardTransformStyle}>
 		{#each hexGrid.iterateHexTilesWithNeighbors() as hexTileWithNeighbors (`${hexTileWithNeighbors.tile.position.inGridX.toString()},${hexTileWithNeighbors.tile.position.inGridY.toString()}`)}
 			<HexBoardCell
