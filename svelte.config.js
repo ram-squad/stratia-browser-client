@@ -9,7 +9,5 @@ export default {
 			assets: "./src/assets",
 		},
 	},
-	// Consult https://github.com/sveltejs/svelte-preprocess
-	// for more information about preprocessors
 	preprocess: preprocess(),
 };
