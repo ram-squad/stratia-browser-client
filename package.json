@@ -6,7 +6,7 @@
 	"description": "",
 	"devDependencies": {
 		"@stylistic/eslint-plugin": "1.5.1",
-		"@sveltejs/adapter-node": "2.0.0",
+		"@sveltejs/adapter-node": "2.0.2",
 		"@sveltejs/kit": "2.0.4",
 		"@types/node": "20.10.5",
 		"@types/uuid": "9.0.7",
