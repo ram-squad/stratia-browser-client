@@ -1,9 +1,13 @@
 <script lang="ts" strictEvents>
+	import type {Dimensions} from "$lib/dimensions/Dimensions.ts";
 	import {HexGrid} from "$lib/hex/HexGrid.ts";
 	import HexBoard from "$lib/hex-board/HexBoard.svelte";
 	import {convertSecondsToMiliseconds} from "$lib/math/convertSecondsToMiliseconds.ts";
+	import type {Camera} from "$lib/play/camera/Camera.ts";
+	import {computeCameraTick} from "$lib/play/camera/computeCameraTick.ts";
 	import {computePlayTick} from "$lib/play/computePlayTick.ts";
 	import {loadPlayFromLocalStorage} from "$lib/play/loadPlayFromLocalStorage.ts";
+	import type {Point} from "$lib/point/Point.ts";
 	import {onDestroy} from "svelte";
 
 	export let playID: string;
@@ -12,8 +16,27 @@
 	let lastPlayID = playID;
 	let play = loadPlayFromLocalStorage(playID);
 
+	let camera: Camera = {
+		position: {
+			x: 0,
+			y: 0,
+		},
+		zoomFactor: 20,
+	};
+
+	let boardMousePositionPixels: null | Point = null;
+
+	let boardDimensionsPixels: Dimensions | null = null;
+
 	const tick = () => {
 		play = computePlayTick(play, tickIntervalSeconds);
+
+		camera = computeCameraTick(
+			camera,
+			boardMousePositionPixels,
+			boardDimensionsPixels,
+			tickIntervalSeconds,
+		);
 	};
 
 	const setupTickInterval = () =>
@@ -34,11 +57,25 @@
 	onDestroy(() => {
 		clearInterval(tickIntervalID);
 	});
+
+	const handleBoardMousePositionChange = (event: CustomEvent<null | Point>) => {
+		boardMousePositionPixels = event.detail;
+	};
+
+	const handleBoardDimensionsChange = (event: CustomEvent<Dimensions>) => {
+		boardDimensionsPixels = event.detail;
+	};
 </script>
 
 <main class="play-view">
 	<h1>Play "{play.id}"</h1>
-	<HexBoard entities={play.entities} hexGrid={new HexGrid(play.tiles)} />
+	<HexBoard
+		{camera}
+		entities={play.entities}
+		hexGrid={new HexGrid(play.tiles)}
+		on:dimensions-change={handleBoardDimensionsChange}
+		on:mouse-position-change={handleBoardMousePositionChange}
+	/>
 </main>
 
 <style lang="scss">

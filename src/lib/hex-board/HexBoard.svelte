@@ -1,17 +1,40 @@
 <script lang="ts" strictEvents>
+	import type {Dimensions} from "$lib/dimensions/Dimensions.ts";
 	import type {HexGrid} from "$lib/hex/HexGrid.ts";
 	import HexBoardEntity from "$lib/hex-board/entity/HexBoardEntity.svelte";
 	import HexBoardCell from "$lib/hex-board/tile/HexBoardTile.svelte";
+	import type {Camera} from "$lib/play/camera/Camera.ts";
 	import type {Entity} from "$lib/play/entities/Entity.ts";
+	import type {Point} from "$lib/point/Point.ts";
+	import {createEventDispatcher} from "svelte";
 
 	export let hexGrid: HexGrid;
 	export let entities: readonly Entity[];
 
+	export let camera: Camera;
+
 	const cellLayoutStylesCalculationPrecission = 100;
-	const zoomFactor = 20;
-	const hexBoardScale = zoomFactor / cellLayoutStylesCalculationPrecission;
-	const hexBoardScaleStyle = hexBoardScale.toString();
+
+	$: hexBoardScale = camera.zoomFactor / cellLayoutStylesCalculationPrecission;
+
+	$: hexBoardScaleStyle = hexBoardScale.toString();
+
+	$: hexBoardTransformTranslateXStyle = `${(
+		-camera.position.x * cellLayoutStylesCalculationPrecission
+	).toString()}px`;
+
+	$: hexBoardTransformTranslateYStyle = `${(
+		-camera.position.y * cellLayoutStylesCalculationPrecission
+	).toString()}px`;
+
+	$: hexBoardTransformStyle = `translate(${hexBoardTransformTranslateXStyle}, ${hexBoardTransformTranslateYStyle})`;
+
 	let requestedEntitySelectionId: null | string = null;
+
+	const dispatchEvent = createEventDispatcher<{
+		"dimensions-change": Dimensions;
+		"mouse-position-change": null | Point;
+	}>();
 
 	$: selectedEntity =
 		requestedEntitySelectionId === null
@@ -21,10 +44,64 @@
 	const handleEntityClick = (event: CustomEvent<string>) => {
 		requestedEntitySelectionId = event.detail;
 	};
+
+	const handleMousemove = (event: MouseEvent) => {
+		const hexBoardElement = event.currentTarget as HTMLDivElement;
+
+		const mousePosition: Point = {
+			x: event.clientX - hexBoardElement.getBoundingClientRect().left,
+			y: event.clientY - hexBoardElement.getBoundingClientRect().top,
+		};
+
+		dispatchEvent("mouse-position-change", mousePosition);
+	};
+
+	const handleMouseleave = () => {
+		dispatchEvent("mouse-position-change", null);
+	};
+
+	const handleMouseenter = (event: MouseEvent) => {
+		const hexBoardElement = event.currentTarget as HTMLDivElement;
+
+		const mousePosition: Point = {
+			x: event.clientX - hexBoardElement.getBoundingClientRect().left,
+			y: event.clientY - hexBoardElement.getBoundingClientRect().top,
+		};
+
+		dispatchEvent("mouse-position-change", mousePosition);
+	};
+
+	const observeDimensions = (element: HTMLDivElement) => {
+		const resizeObserver = new ResizeObserver((entries) => {
+			entries.forEach((entry) => {
+				const {height, width} = entry.contentRect;
+
+				dispatchEvent("dimensions-change", {
+					height,
+					width,
+				});
+			});
+		});
+
+		resizeObserver.observe(element);
+
+		return {
+			destroy: () => {
+				resizeObserver.disconnect();
+			},
+		};
+	};
 </script>
 
-<div class="hex-board-no-scrollbar-wrapper">
-	<ul class="hex-board" style:scale={hexBoardScaleStyle}>
+<div
+	class="hex-board-no-scrollbar-wrapper"
+	on:mouseenter={handleMouseenter}
+	on:mouseleave={handleMouseleave}
+	on:mousemove={handleMousemove}
+	role="presentation"
+	use:observeDimensions
+>
+	<ul class="hex-board" style:scale={hexBoardScaleStyle} style:transform={hexBoardTransformStyle}>
 		{#each hexGrid.iterateHexTilesWithNeighbors() as hexTileWithNeighbors (`${hexTileWithNeighbors.tile.position.inGridX.toString()},${hexTileWithNeighbors.tile.position.inGridY.toString()}`)}
 			<HexBoardCell
 				{hexTileWithNeighbors}
