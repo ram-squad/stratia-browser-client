@@ -1,3 +1,5 @@
+<svelte:options immutable={true} />
+
 <script lang="ts" strictEvents>
 	import {createPlay} from "$lib/play/createPlay.ts";
 	import {savePlayToLocalStorage} from "$lib/play/savePlayToLocalStorage.ts";

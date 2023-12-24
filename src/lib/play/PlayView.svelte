@@ -1,3 +1,5 @@
+<svelte:options immutable={true} />
+
 <script lang="ts" strictEvents>
 	import type {Dimensions} from "$lib/dimensions/Dimensions.ts";
 	import {HexGrid} from "$lib/hex/HexGrid.ts";

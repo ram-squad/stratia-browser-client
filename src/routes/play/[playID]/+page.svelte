@@ -1,3 +1,5 @@
+<svelte:options immutable={true} />
+
 <script lang="ts" strictEvents>
 	import * as AppEnvironment from "$app/environment";
 	import * as AppStores from "$app/stores";
