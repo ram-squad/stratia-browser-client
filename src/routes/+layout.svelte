@@ -1,3 +1,5 @@
+<svelte:options immutable={true} />
+
 <script lang="ts" strictEvents>
 	import AppRoot from "$lib/app/AppRoot.svelte";
 

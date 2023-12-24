@@ -1,3 +1,5 @@
+<svelte:options immutable={true} />
+
 <script lang="ts" strictEvents>
 	import type {HexTileWithNeighbors} from "$lib/hex/HexTileWithNeighbors.ts";
 	import {computeSideStrokeColors} from "$lib/hex-board/tile/computeSideStrokeColors.ts";
