@@ -31,7 +31,7 @@
 
 	$: hexBoardTransformStyle = `translate(${hexBoardTransformTranslateXStyle}, ${hexBoardTransformTranslateYStyle})`;
 
-	let requestedEntitySelectionId: null | string = null;
+	let requestedEntitySelectionId: Entity["id"] | null = null;
 
 	const dispatchEvent = createEventDispatcher<{
 		"dimensions-change": Dimensions;
@@ -43,7 +43,7 @@
 			? null
 			: entities.find((entity) => entity.id === requestedEntitySelectionId) ?? null;
 
-	const handleEntityClick = (event: CustomEvent<string>) => {
+	const handleEntityClick = (event: CustomEvent<Entity["id"]>) => {
 		requestedEntitySelectionId = event.detail;
 	};
 
