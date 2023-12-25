@@ -31,7 +31,7 @@
 
 	$: hexBoardTransformStyle = `translate(${hexBoardTransformTranslateXStyle}, ${hexBoardTransformTranslateYStyle})`;
 
-	let requestedEntitySelectionId: null | string = null;
+	let requestedEntitySelectionID: Entity["id"] | null = null;
 
 	const dispatchEvent = createEventDispatcher<{
 		"dimensions-change": Dimensions;
@@ -39,12 +39,36 @@
 	}>();
 
 	$: selectedEntity =
-		requestedEntitySelectionId === null
+		requestedEntitySelectionID === null
 			? null
-			: entities.find((entity) => entity.id === requestedEntitySelectionId) ?? null;
+			: entities.find((entity) => entity.id === requestedEntitySelectionID) ?? null;
 
-	const handleEntityClick = (event: CustomEvent<string>) => {
-		requestedEntitySelectionId = event.detail;
+	let clickedEntitiesIDsAccumulator: readonly Entity["id"][] = [];
+
+	const handleHexBoardClick = () => {
+		const clickedEntitiesIDs = clickedEntitiesIDsAccumulator;
+
+		clickedEntitiesIDsAccumulator = [];
+
+		if (clickedEntitiesIDs.length > 1) {
+			throw new Error("Multiple entities clicked at the same time. Not implemented yet.");
+		}
+
+		const [clickedEntityID] = clickedEntitiesIDs;
+
+		if (clickedEntityID === undefined) {
+			requestedEntitySelectionID = null;
+
+			return;
+		}
+
+		requestedEntitySelectionID = clickedEntityID;
+	};
+
+	const handleEntityClick = (event: CustomEvent<Entity["id"]>) => {
+		const clickedEntityID = event.detail;
+
+		clickedEntitiesIDsAccumulator = [...clickedEntitiesIDsAccumulator, clickedEntityID];
 	};
 
 	const handleMousemove = (event: MouseEvent) => {
@@ -97,6 +121,7 @@
 
 <div
 	class="hex-board-no-scrollbar-wrapper"
+	on:click={handleHexBoardClick}
 	on:mouseenter={handleMouseenter}
 	on:mouseleave={handleMouseleave}
 	on:mousemove={handleMousemove}
