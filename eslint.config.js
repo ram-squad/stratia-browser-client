@@ -1105,6 +1105,12 @@ export default [
 					/* "ignoreProperties": [], */ ignorePrefixed: false,
 				},
 			],
+			"svelte/no-unused-class-name": [
+				"warn",
+				{
+					allowedClassNames: [],
+				},
+			],
 			"svelte/no-unused-svelte-ignore": "error",
 			"svelte/no-useless-mustaches": [
 				"error",
