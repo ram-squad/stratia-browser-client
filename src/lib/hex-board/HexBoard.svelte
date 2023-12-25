@@ -43,8 +43,32 @@
 			? null
 			: entities.find((entity) => entity.id === requestedEntitySelectionID) ?? null;
 
+	let clickedEntitiesIDsAccumulator: readonly Entity["id"][] = [];
+
+	const handleHexBoardClick = () => {
+		const clickedEntitiesIDs = clickedEntitiesIDsAccumulator;
+
+		clickedEntitiesIDsAccumulator = [];
+
+		if (clickedEntitiesIDs.length > 1) {
+			throw new Error("Multiple entities clicked at the same time. Not implemented yet.");
+		}
+
+		const [clickedEntityID] = clickedEntitiesIDs;
+
+		if (clickedEntityID === undefined) {
+			requestedEntitySelectionID = null;
+
+			return;
+		}
+
+		requestedEntitySelectionID = clickedEntityID;
+	};
+
 	const handleEntityClick = (event: CustomEvent<Entity["id"]>) => {
-		requestedEntitySelectionID = event.detail;
+		const clickedEntityID = event.detail;
+
+		clickedEntitiesIDsAccumulator = [...clickedEntitiesIDsAccumulator, clickedEntityID];
 	};
 
 	const handleMousemove = (event: MouseEvent) => {
@@ -97,6 +121,7 @@
 
 <div
 	class="hex-board-no-scrollbar-wrapper"
+	on:click={handleHexBoardClick}
 	on:mouseenter={handleMouseenter}
 	on:mouseleave={handleMouseleave}
 	on:mousemove={handleMousemove}
