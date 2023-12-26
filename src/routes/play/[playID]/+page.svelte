@@ -3,7 +3,7 @@
 <script lang="ts" strictEvents>
 	import * as AppEnvironment from "$app/environment";
 	import * as AppStores from "$app/stores";
-	import PlayView from "$lib/play/PlayView.svelte";
+	import PlayView from "$lib/play/view/PlayView.svelte";
 
 	const {page} = AppStores;
 	$: ({playID} = $page.params);
