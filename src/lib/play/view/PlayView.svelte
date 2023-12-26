@@ -9,6 +9,7 @@
 	import {computeCameraTick} from "$lib/play/camera/computeCameraTick.ts";
 	import {computePlayTick} from "$lib/play/computePlayTick.ts";
 	import {loadPlayFromLocalStorage} from "$lib/play/loadPlayFromLocalStorage.ts";
+	import SelectedEntityBar from "$lib/play/view/selected-entity-bar/SelectedEntityBar.svelte";
 	import type {Point} from "$lib/point/Point.ts";
 	import {onDestroy} from "svelte";
 
@@ -70,18 +71,37 @@
 </script>
 
 <main class="play-view">
-	<HexBoard
-		{camera}
-		entities={play.entities}
-		hexGrid={new HexGrid(play.tiles)}
-		on:dimensions-change={handleBoardDimensionsChange}
-		on:mouse-position-change={handleBoardMousePositionChange}
-	/>
+	<div class="play-view__selected-entity-bar-wrapper">
+		<SelectedEntityBar />
+	</div>
+	<div class="play-view__board-wrapper">
+		<HexBoard
+			{camera}
+			entities={play.entities}
+			hexGrid={new HexGrid(play.tiles)}
+			on:dimensions-change={handleBoardDimensionsChange}
+			on:mouse-position-change={handleBoardMousePositionChange}
+		/>
+	</div>
 </main>
 
 <style lang="scss">
 	.play-view {
 		display: grid;
-		grid-template-rows: 1fr;
+		grid-template-areas: "board" "selected-entity-bar";
+		grid-template-rows: 1fr 10rem;
+	}
+
+	.play-view__selected-entity-bar-wrapper {
+		grid-area: selected-entity-bar;
+	}
+
+	.play-view__board-wrapper {
+		grid-area: board;
+	}
+
+	.play-view__selected-entity-bar-wrapper,
+	.play-view__board-wrapper {
+		display: grid;
 	}
 </style>
