@@ -70,7 +70,6 @@
 </script>
 
 <main class="play-view">
-	<h1>Play "{play.id}"</h1>
 	<HexBoard
 		{camera}
 		entities={play.entities}
@@ -83,6 +82,6 @@
 <style lang="scss">
 	.play-view {
 		display: grid;
-		grid-template-rows: auto 1fr;
+		grid-template-rows: 1fr;
 	}
 </style>
