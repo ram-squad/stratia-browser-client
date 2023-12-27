@@ -20,7 +20,7 @@ export default {
 		"annotation-no-unknown": [
 			true,
 			{
-				ignoreAnnotations: [],
+				ignoreAnnotations: ["default"],
 				severity: "error",
 			},
 		],

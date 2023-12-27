@@ -8,7 +8,9 @@ export function createPlay(): Play {
 		entities: [
 			{
 				directionRadians: -0.5,
+				healthPoints: 10,
 				id: generateNewEntityID(),
+				maximalHealthPoints: 40,
 				position: {
 					x: 0,
 					y: 0,
@@ -17,7 +19,9 @@ export function createPlay(): Play {
 			},
 			{
 				directionRadians: 1,
+				healthPoints: 10,
 				id: generateNewEntityID(),
+				maximalHealthPoints: 20,
 				position: {
 					x: 3,
 					y: 1,
