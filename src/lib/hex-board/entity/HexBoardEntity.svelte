@@ -25,11 +25,11 @@
 	$: entityTransformStyle = `${entityTransformTranslateStyle} ${entityTransformRotateStyle}`;
 
 	const eventDispatcher = createEventDispatcher<{
-		"icon-click": Entity["id"];
+		"icon-click": Entity;
 	}>();
 
 	const handleIconClick = () => {
-		eventDispatcher("icon-click", entity.id);
+		eventDispatcher("icon-click", entity);
 	};
 </script>
 
