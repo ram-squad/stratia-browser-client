@@ -22,6 +22,11 @@
 
 	let requestedEntitySelectionID: null | string = null;
 
+	$: selectedEntity =
+		requestedEntitySelectionID === null
+			? null
+			: play.entities.find((entity) => entity.id === requestedEntitySelectionID) ?? null;
+
 	$: entityWithSelectionStatuses = play.entities.map((entity) => ({
 		entity,
 		isSelected:
@@ -93,7 +98,7 @@
 
 <main class="play-view">
 	<div class="play-view__selected-entity-bar-wrapper">
-		<SelectedEntityBar />
+		<SelectedEntityBar {selectedEntity} />
 	</div>
 	<div class="play-view__board-wrapper">
 		<HexBoard
