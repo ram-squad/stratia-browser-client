@@ -155,15 +155,6 @@ export default {
 				severity: "error",
 			},
 		],
-		"declaration-property-value-no-unknown": [
-			true,
-			{
-				ignoreProperties: {},
-				propertiesSyntax: {},
-				severity: "error",
-				typesSyntax: {},
-			},
-		],
 		"font-family-name-quotes": [
 			"always-unless-keyword",
 			{
