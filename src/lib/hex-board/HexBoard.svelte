@@ -3,6 +3,7 @@
 <script lang="ts" strictEvents>
 	import type {Dimensions} from "$lib/dimensions/Dimensions.ts";
 	import type {HexGrid} from "$lib/hex/HexGrid.ts";
+	import type {EntityWithSelectionStatus} from "$lib/hex-board/entity/EntityWithSelectionStatus.ts";
 	import HexBoardEntity from "$lib/hex-board/entity/HexBoardEntity.svelte";
 	import HexBoardCell from "$lib/hex-board/tile/HexBoardTile.svelte";
 	import type {Camera} from "$lib/play/camera/Camera.ts";
@@ -11,7 +12,7 @@
 	import {createEventDispatcher} from "svelte";
 
 	export let hexGrid: HexGrid;
-	export let entities: readonly Entity[];
+	export let entityWithSelectionStatuses: readonly EntityWithSelectionStatus[];
 
 	export let camera: Camera;
 
@@ -31,17 +32,11 @@
 
 	$: hexBoardTransformStyle = `translate(${hexBoardTransformTranslateXStyle}, ${hexBoardTransformTranslateYStyle})`;
 
-	let requestedEntitySelectionID: Entity["id"] | null = null;
-
 	const dispatchEvent = createEventDispatcher<{
 		"dimensions-change": Dimensions;
+		"entity-clicked": Entity["id"] | null;
 		"mouse-position-change": null | Point;
 	}>();
-
-	$: selectedEntity =
-		requestedEntitySelectionID === null
-			? null
-			: entities.find((entity) => entity.id === requestedEntitySelectionID) ?? null;
 
 	let clickedEntitiesIDsAccumulator: readonly Entity["id"][] = [];
 
@@ -57,18 +52,18 @@
 		const [clickedEntityID] = clickedEntitiesIDs;
 
 		if (clickedEntityID === undefined) {
-			requestedEntitySelectionID = null;
+			dispatchEvent("entity-clicked", null);
 
 			return;
 		}
 
-		requestedEntitySelectionID = clickedEntityID;
+		dispatchEvent("entity-clicked", clickedEntityID);
 	};
 
-	const handleEntityClick = (event: CustomEvent<Entity["id"]>) => {
-		const clickedEntityID = event.detail;
+	const handleEntityClick = (event: CustomEvent<Entity>) => {
+		const clickedEntity = event.detail;
 
-		clickedEntitiesIDsAccumulator = [...clickedEntitiesIDsAccumulator, clickedEntityID];
+		clickedEntitiesIDsAccumulator = [...clickedEntitiesIDsAccumulator, clickedEntity.id];
 	};
 
 	const handleMousemove = (event: MouseEvent) => {
@@ -135,10 +130,10 @@
 				layoutStylesCalculationPrecission={cellLayoutStylesCalculationPrecission}
 			/>
 		{/each}
-		{#each entities as entity (entity.id)}
+		{#each entityWithSelectionStatuses as { entity, isSelected } (entity.id)}
 			<HexBoardEntity
 				{entity}
-				isSelected={selectedEntity !== null && selectedEntity.id === entity.id}
+				{isSelected}
 				layoutStylesCalculationPrecission={cellLayoutStylesCalculationPrecission}
 				on:icon-click={handleEntityClick}
 			/>

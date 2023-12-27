@@ -8,6 +8,7 @@
 	import type {Camera} from "$lib/play/camera/Camera.ts";
 	import {computeCameraTick} from "$lib/play/camera/computeCameraTick.ts";
 	import {computePlayTick} from "$lib/play/computePlayTick.ts";
+	import type {Entity} from "$lib/play/entities/Entity.ts";
 	import {loadPlayFromLocalStorage} from "$lib/play/loadPlayFromLocalStorage.ts";
 	import SelectedEntityBar from "$lib/play/view/selected-entity-bar/SelectedEntityBar.svelte";
 	import type {Point} from "$lib/point/Point.ts";
@@ -18,6 +19,14 @@
 	const tickIntervalSeconds = 0.1;
 	let lastPlayID = playID;
 	let play = loadPlayFromLocalStorage(playID);
+
+	let requestedEntitySelectionID: null | string = null;
+
+	$: entityWithSelectionStatuses = play.entities.map((entity) => ({
+		entity,
+		isSelected:
+			requestedEntitySelectionID === null ? false : entity.id === requestedEntitySelectionID,
+	}));
 
 	let camera: Camera = {
 		position: {
@@ -68,6 +77,18 @@
 	const handleBoardDimensionsChange = (event: CustomEvent<Dimensions>) => {
 		boardDimensionsPixels = event.detail;
 	};
+
+	const handleEntityClicked = (event: CustomEvent<Entity["id"] | null>) => {
+		const clickedEntityID = event.detail;
+
+		if (clickedEntityID === null) {
+			requestedEntitySelectionID = null;
+
+			return;
+		}
+
+		requestedEntitySelectionID = clickedEntityID;
+	};
 </script>
 
 <main class="play-view">
@@ -77,9 +98,10 @@
 	<div class="play-view__board-wrapper">
 		<HexBoard
 			{camera}
-			entities={play.entities}
+			{entityWithSelectionStatuses}
 			hexGrid={new HexGrid(play.tiles)}
 			on:dimensions-change={handleBoardDimensionsChange}
+			on:entity-clicked={handleEntityClicked}
 			on:mouse-position-change={handleBoardMousePositionChange}
 		/>
 	</div>
