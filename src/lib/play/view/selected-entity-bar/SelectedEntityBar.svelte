@@ -1,15 +1,15 @@
 <svelte:options immutable={true} />
 
 <script lang="ts" strictEvents>
-	import type {Entity} from "$lib/play/entity/Entity.ts";
+	import type {EntitySelection} from "$lib/play/entity/selection/EntitySelection.ts";
 
-	export let selectedEntity: Entity | null;
+	export let entitySelection: EntitySelection | null;
 </script>
 
 <div>
-	{#if selectedEntity === null}
+	{#if entitySelection === null}
 		No entity selected.
 	{:else}
-		Selected entity: {selectedEntity.id}
+		Selected entity: {entitySelection.entity.id}
 	{/if}
 </div>

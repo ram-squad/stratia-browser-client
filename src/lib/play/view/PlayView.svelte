@@ -12,6 +12,7 @@
 	import {computePlayTick} from "$lib/play/tick/computePlayTick.ts";
 	import {HexGrid} from "$lib/play/tile/shapes/hex/grid/HexGrid.ts";
 	import HexTileOnBoard from "$lib/play/tile/shapes/hex/tile/on-board/HexTileOnBoard.svelte";
+	import {createEntitySelectionHook} from "$lib/play/view/hooks/entity-selection/createEntitySelectionHook.ts";
 	import SelectedEntityBar from "$lib/play/view/selected-entity-bar/SelectedEntityBar.svelte";
 	import {onDestroy} from "svelte";
 
@@ -21,18 +22,17 @@
 	let lastPlayID = playID;
 	let play = loadPlayFromLocalStorage(playID);
 
-	let requestedEntitySelectionID: null | string = null;
+	let playEntities = play.entities;
 
-	$: selectedEntity =
-		requestedEntitySelectionID === null
-			? null
-			: play.entities.find((entity) => entity.id === requestedEntitySelectionID) ?? null;
+	$: playEntities = play.entities;
 
-	$: entityWithSelectionStatuses = play.entities.map((entity) => ({
-		entity,
-		isSelected:
-			requestedEntitySelectionID === null ? false : entity.id === requestedEntitySelectionID,
-	}));
+	const {
+		entitySelectionStore,
+		entityWithSelectionStatusesStore,
+		updateEntitySelectionValidEntities,
+	} = createEntitySelectionHook(playEntities);
+
+	$: ({requestSelectingEntityByID} = updateEntitySelectionValidEntities(playEntities));
 
 	let camera: Camera = {
 		position: {
@@ -87,13 +87,7 @@
 	const handleEntityClicked = (event: CustomEvent<Entity["id"] | null>) => {
 		const clickedEntityID = event.detail;
 
-		if (clickedEntityID === null) {
-			requestedEntitySelectionID = null;
-
-			return;
-		}
-
-		requestedEntitySelectionID = clickedEntityID;
+		requestSelectingEntityByID(clickedEntityID);
 	};
 
 	$: playTiles = play.tiles;
@@ -105,12 +99,12 @@
 
 <main class="play-view">
 	<div class="play-view__selected-entity-bar-wrapper">
-		<SelectedEntityBar {selectedEntity} />
+		<SelectedEntityBar entitySelection={$entitySelectionStore} />
 	</div>
 	<div class="play-view__board-wrapper">
 		<Board
 			{camera}
-			{entityWithSelectionStatuses}
+			entityWithSelectionStatuses={$entityWithSelectionStatusesStore}
 			on:dimensions-change={handleBoardDimensionsChange}
 			on:entity-clicked={handleEntityClicked}
 			on:mouse-position-change={handleBoardMousePositionChange}
