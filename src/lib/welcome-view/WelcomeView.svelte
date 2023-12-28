@@ -20,7 +20,7 @@
 		<div class="main-menu">
 			<h1 class="game-title-text">Stratia</h1>
 			<button
-				class="menu-button slide_inside"
+				class="menu-button slide-inside"
 				on:click={handleStartNewPlayButtonClick}
 				type="button">Start a new game</button
 			>
@@ -49,8 +49,6 @@
 		width: 80vw;
 	}
 
-	/* menu-button */
-
 	.menu-button {
 		background-color: rgb(0 174 255);
 		border: 2px solid rgb(216 2 134);
@@ -72,13 +70,9 @@
 		font-size: 24px;
 	}
 
-	.slide_inside:hover {
+	.slide-inside:hover {
 		box-shadow: inset 0 0 0 50px #bb5400;
 	}
-
-	/* end menu-button */
-
-	/* game-title-text */
 
 	.game-title-text {
 		background: linear-gradient(
@@ -113,6 +107,4 @@
 		top: 0;
 		z-index: -1;
 	}
-
-	/* end game-title-text */
 </style>
