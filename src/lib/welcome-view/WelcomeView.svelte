@@ -8,7 +8,9 @@
 
 	const handleStartNewPlayButtonClick = async () => {
 		const newPlay = createPlay();
+
 		savePlayToLocalStorage(newPlay);
+
 		await gotoPlay(newPlay.id);
 	};
 </script>
@@ -17,14 +19,14 @@
 	<div class="background">
 		<div class="main-menu">
 			<h1 class="game-title-text">Stratia</h1>
-			<button on:click={handleStartNewPlayButtonClick} class="menu-button slide_inside"
+			<button class="menu-button slide_inside" on:click={handleStartNewPlayButtonClick} type="button"
 				>Start a new game</button
 			>
 		</div>
 	</div>
 </main>
 
-<style>
+<style lang="scss">
 	.background {
 		background-color: rgb(0 0 0);
 		height: 100%;
