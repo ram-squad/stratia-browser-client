@@ -72,20 +72,8 @@
 		font-size: 24px;
 	}
 
-	.slide_down:hover {
-		box-shadow: inset 0 100px 0 0 #bb5400;
-	}
-
-	.slide_right:hover {
-		box-shadow: inset 400px 0 0 0 #bb5400;
-	}
-
 	.slide_inside:hover {
 		box-shadow: inset 0 0 0 50px #bb5400;
-	}
-
-	.slide_diagonal:hover {
-		box-shadow: inset 400px 50px 0 0 #bb5400;
 	}
 
 	/* end menu-button */
