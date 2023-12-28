@@ -19,8 +19,10 @@
 	<div class="background">
 		<div class="main-menu">
 			<h1 class="game-title-text">Stratia</h1>
-			<button class="menu-button slide_inside" on:click={handleStartNewPlayButtonClick} type="button"
-				>Start a new game</button
+			<button
+				class="menu-button slide_inside"
+				on:click={handleStartNewPlayButtonClick}
+				type="button">Start a new game</button
 			>
 		</div>
 	</div>
