@@ -16,6 +16,101 @@
 </script>
 
 <main>
-	<h1>Stratia</h1>
-	<button on:click={handleStartNewPlayButtonClick} type="button"> Start a new play </button>
+  <div class="background">
+    <div class="main-menu">
+      <h1 class="game-title-text">Stratia</h1>
+      <button on:click={handleStartNewPlayButtonClick} class="menu-button slide_inside" type="button"> Start a new game </button>
+    </div>
+  </div>
 </main>
+
+<style lang="scss">
+.background
+{
+  background-color: black;
+  height: 100%;
+  width: 100%;
+}
+.main-menu{
+  text-align: center;
+	background-color:rgb(0, 0, 46);
+	position: absolute;
+	margin-left: 10vw;
+	margin-top: 10vh;
+	width: 80vw;
+	height: 80vh;
+	border: solid;
+	border-width: 10px;
+	border-radius: 40px;
+  border-color: yellow;
+}
+//menu-button
+.menu-button {
+  background-color: rgb(0, 174, 255);
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(216, 2, 134);
+  border-radius: 0px;
+  padding: 18px 36px;
+  display: inline-block;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 24px;
+  font-weight: 4px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 #ff009d;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+}
+.menu-button:hover{
+	font-size: 24px;
+	color: rgb(255, 230, 0);
+}
+
+.slide_down:hover {
+  box-shadow: inset 0 100px 0 0 #bb5400;
+}
+
+.slide_right:hover {
+  box-shadow: inset 400px 0 0 0 #bb5400;
+}
+
+.slide_inside:hover {
+  box-shadow: inset 0 0 0 50px #bb5400;
+}
+
+.slide_diagonal:hover {
+  box-shadow: inset 400px 50px 0 0 #bb5400;
+}
+//end menu-button
+//game-title-text
+.game-title-text {
+    background: linear-gradient(to bottom, #cfc09f 22%, #cfc09f 26%, #cfc09f 27%,#ffecb3 40%,#3a2c0f 78%); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #fff;
+font-family: 'Playfair Display', serif;
+    position: relative;
+	text-transform: uppercase;	
+	font-size: 14vw;
+	margin: 0;
+	font-weight: 400;
+	animation: game 0s 5s;
+}
+
+.game-title-text:after {
+    background: none;
+    content: attr(data-heading);
+    left: 0;
+	top: 0;
+    z-index: -1;
+    position: absolute;
+    text-shadow: 
+		-1px 0 1px #c6bb9f, 
+		0 1px 1px #c6bb9f, 
+		5px 5px 10px rgba(0, 0, 0, 0.4),
+		-5px -5px 10px rgba(0, 0, 0, 0.4);
+}
+//end game-title-text
+
+</style>
