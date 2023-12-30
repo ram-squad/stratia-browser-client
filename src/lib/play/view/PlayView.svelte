@@ -1,17 +1,18 @@
 <svelte:options immutable={true} />
 
 <script lang="ts" strictEvents>
-	import type {Dimensions} from "$lib/dimensions/Dimensions.ts";
-	import {HexGrid} from "$lib/hex/HexGrid.ts";
-	import HexBoard from "$lib/hex-board/HexBoard.svelte";
-	import {convertSecondsToMiliseconds} from "$lib/math/convertSecondsToMiliseconds.ts";
+	import type {Dimensions} from "$lib/math/dimensions/Dimensions.ts";
+	import type {Point} from "$lib/math/point/Point.ts";
+	import {convertSecondsToMiliseconds} from "$lib/math/time/convertSecondsToMiliseconds.ts";
+	import Board from "$lib/play/board/Board.svelte";
 	import type {Camera} from "$lib/play/camera/Camera.ts";
-	import {computeCameraTick} from "$lib/play/camera/computeCameraTick.ts";
-	import {computePlayTick} from "$lib/play/computePlayTick.ts";
-	import type {Entity} from "$lib/play/entities/Entity.ts";
-	import {loadPlayFromLocalStorage} from "$lib/play/loadPlayFromLocalStorage.ts";
+	import {computeCameraTick} from "$lib/play/camera/tick/computeCameraTick.ts";
+	import type {Entity} from "$lib/play/entity/Entity.ts";
+	import {loadPlayFromLocalStorage} from "$lib/play/local-storage/loadPlayFromLocalStorage.ts";
+	import {computePlayTick} from "$lib/play/tick/computePlayTick.ts";
+	import {HexGrid} from "$lib/play/tile/shapes/hex/grid/HexGrid.ts";
+	import HexTileOnBoard from "$lib/play/tile/shapes/hex/tile/on-board/HexTileOnBoard.svelte";
 	import SelectedEntityBar from "$lib/play/view/selected-entity-bar/SelectedEntityBar.svelte";
-	import type {Point} from "$lib/point/Point.ts";
 	import {onDestroy} from "svelte";
 
 	export let playID: string;
@@ -94,6 +95,12 @@
 
 		requestedEntitySelectionID = clickedEntityID;
 	};
+
+	$: playTiles = play.tiles;
+
+	$: hexGrid = new HexGrid(playTiles);
+
+	$: tileWithNeighbors = Array.from(hexGrid.iterateHexTilesWithNeighbors());
 </script>
 
 <main class="play-view">
@@ -101,14 +108,18 @@
 		<SelectedEntityBar {selectedEntity} />
 	</div>
 	<div class="play-view__board-wrapper">
-		<HexBoard
+		<Board
 			{camera}
 			{entityWithSelectionStatuses}
-			hexGrid={new HexGrid(play.tiles)}
 			on:dimensions-change={handleBoardDimensionsChange}
 			on:entity-clicked={handleEntityClicked}
 			on:mouse-position-change={handleBoardMousePositionChange}
-		/>
+			{tileWithNeighbors}
+		>
+			<svelte:fragment let:layoutStylesCalculationPrecission let:neighbors let:tile slot="tile">
+				<HexTileOnBoard {layoutStylesCalculationPrecission} {neighbors} {tile} />
+			</svelte:fragment>
+		</Board>
 	</div>
 </main>
 
