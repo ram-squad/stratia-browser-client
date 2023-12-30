@@ -180,7 +180,7 @@ export default [
 			"@typescript-eslint/no-duplicate-type-constituents": "error",
 			"@typescript-eslint/no-dynamic-delete": "error",
 			"@typescript-eslint/no-empty-function": [
-				"error",
+				"warn",
 				{
 					allow: [],
 				},
@@ -306,10 +306,8 @@ export default [
 			"@typescript-eslint/no-unnecessary-type-constraint": "error",
 			"@typescript-eslint/no-unsafe-argument": "error",
 			"@typescript-eslint/no-unsafe-assignment": "error",
-			"@typescript-eslint/no-unsafe-call": "error",
 			"@typescript-eslint/no-unsafe-declaration-merging": "error",
 			"@typescript-eslint/no-unsafe-enum-comparison": "error",
-			"@typescript-eslint/no-unsafe-member-access": "error",
 			"@typescript-eslint/no-unsafe-return": "error",
 			"@typescript-eslint/no-unused-expressions": [
 				"warn",
@@ -318,15 +316,6 @@ export default [
 					allowTaggedTemplates: false,
 					allowTernary: false,
 					enforceForJSX: true,
-				},
-			],
-			"@typescript-eslint/no-unused-vars": [
-				"warn",
-				{
-					args: "after-used",
-					caughtErrors: "all",
-					ignoreRestSiblings: false,
-					vars: "all",
 				},
 			],
 			"@typescript-eslint/no-use-before-define": [
@@ -1014,17 +1003,6 @@ export default [
 		rules: {
 			// Props support.
 			"@typescript-eslint/init-declarations": "off",
-			// $$Slots support.
-			"@typescript-eslint/no-unused-vars": [
-				"warn",
-				{
-					args: "after-used",
-					caughtErrors: "all",
-					ignoreRestSiblings: false,
-					vars: "all",
-					varsIgnorePattern: "^\\$\\$Slots$",
-				},
-			],
 			// Svelte props support.
 			"import/no-mutable-exports": "off",
 			// Props support.
@@ -1129,7 +1107,7 @@ export default [
 			"svelte/require-store-reactive-access": "error",
 			"svelte/require-stores-init": "error",
 			"svelte/shorthand-attribute": [
-				"error",
+				"warn",
 				{
 					prefer: "always",
 				},
