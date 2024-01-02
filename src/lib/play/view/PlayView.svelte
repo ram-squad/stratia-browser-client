@@ -5,6 +5,7 @@
 	import type {Point} from "$lib/math/point/Point.ts";
 	import Board from "$lib/play/board/Board.svelte";
 	import type {Entity} from "$lib/play/entity/Entity.ts";
+	import type {EntitySelection} from "$lib/play/entity/selection/EntitySelection.ts";
 	import {HexGrid} from "$lib/play/tile/shapes/hex/grid/HexGrid.ts";
 	import HexTileOnBoard from "$lib/play/tile/shapes/hex/tile/on-board/HexTileOnBoard.svelte";
 	import {createPlayStateHook} from "$lib/play/view/hooks/play-state/createPlayStateHook.ts";
@@ -33,10 +34,21 @@
 
 	let requestedEntitySelectionID: null | string = null;
 
-	$: selectedEntity =
-		requestedEntitySelectionID === null
-			? null
-			: playEntities.find((entity) => entity.id === requestedEntitySelectionID) ?? null;
+	$: entitySelection = ((): EntitySelection | null => {
+		if (requestedEntitySelectionID === null) {
+			return null;
+		}
+
+		const selectedEntity = playEntities.find((entity) => entity.id === requestedEntitySelectionID);
+
+		if (selectedEntity === undefined) {
+			return null;
+		}
+
+		return {
+			entity: selectedEntity,
+		};
+	})();
 
 	$: entityWithSelectionStatuses = playEntities.map((entity) => ({
 		entity,
@@ -71,7 +83,7 @@
 
 <main class="play-view">
 	<div class="play-view__selected-entity-bar-wrapper">
-		<SelectedEntityBar {selectedEntity} />
+		<SelectedEntityBar {entitySelection} />
 	</div>
 	<div class="play-view__board-wrapper">
 		<Board
