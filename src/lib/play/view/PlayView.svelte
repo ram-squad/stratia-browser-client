@@ -21,7 +21,7 @@
 
 	const playStateHook = createPlayStateHook();
 
-	$: ({cameraStore, destroyPlayState, playStore} = playStateHook({
+	$: ({cameraStore, destroyPlayState, updateZoom, playStore} = playStateHook({
 		boardDimensionsPixels,
 		boardMousePositionPixels,
 		playID,
@@ -44,6 +44,10 @@
 		playEntities,
 		$entitySelectionStore,
 	);
+
+	const handleBoardMouseScrolled = (event: CustomEvent<number>) => {
+		updateZoom(event.detail)
+	}
 
 	const handleBoardMousePositionChange = (event: CustomEvent<null | Point>) => {
 		boardMousePositionPixels = event.detail;
@@ -81,6 +85,7 @@
 			on:dimensions-change={handleBoardDimensionsChange}
 			on:entity-clicked={handleEntityClicked}
 			on:mouse-position-change={handleBoardMousePositionChange}
+			on:mouse-scrolled={handleBoardMouseScrolled}
 			{tileWithNeighbors}
 		>
 			<svelte:fragment let:layoutStylesCalculationPrecission let:neighbors let:tile slot="tile">
