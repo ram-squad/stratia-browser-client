@@ -488,7 +488,7 @@ export default [
 			"@typescript-eslint/unbound-method": [
 				"error",
 				{
-					ignoreStatic: false,
+					ignoreStatic: true,
 				},
 			],
 			"@typescript-eslint/unified-signatures": [
