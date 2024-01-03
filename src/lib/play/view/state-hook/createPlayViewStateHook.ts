@@ -21,6 +21,15 @@ import type {Readable, Writable} from "svelte/store";
 
 const tickIntervalSeconds = 0.05;
 
+function findEntityInListByID(
+	entities: readonly Entity[],
+	entityToFindID: Entity["id"],
+): Entity | null {
+	const foundEntity = entities.find((entity): boolean => entity.id === entityToFindID);
+
+	return foundEntity ?? null;
+}
+
 type PlayViewStateData = Readonly<{
 	boardDimensionsPixels: Dimensions | null;
 	boardMousePositionPixels: null | Point;
@@ -46,14 +55,15 @@ function computeEntitySelection(
 	entities: readonly Entity[],
 	entityToSelectID: Entity["id"],
 ): EntitySelection | null {
-	const entityToSelect = entities.find((entity): boolean => entity.id === entityToSelectID);
+	const entityToSelect = findEntityInListByID(entities, entityToSelectID);
 
-	if (entityToSelect === undefined) {
+	if (entityToSelect === null) {
 		return null;
 	}
 
 	return {
 		entity: entityToSelect,
+		mode: null,
 	};
 }
 

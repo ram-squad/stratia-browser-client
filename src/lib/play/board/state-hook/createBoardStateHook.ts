@@ -31,7 +31,7 @@ type BoardStateHookReturnValue = Readonly<{
 	observeBoardDimensions: SvelteAction.Action<HTMLElement, undefined>;
 }>;
 
-export type BoardStateHookState = Readonly<{
+type BoardStateHookState = Readonly<{
 	api: BoardStateHookReturnValue;
 }>;
 
