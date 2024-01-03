@@ -145,6 +145,7 @@ type PlayViewStateHookReturnValue = Readonly<{
 	cleanupPlayViewStateHook: () => void;
 	entitySelectionStore: Readable<EntitySelection | null>;
 	entityWithSelectionStatusesStore: Readable<readonly EntityWithSelectionStatus[]>;
+	handleBoardClick: (event: CustomEvent<Point>) => void;
 	handleBoardDimensionsChange: (event: CustomEvent<Dimensions | null>) => void;
 	handleBoardEntityClicked: (event: CustomEvent<Entity["id"] | null>) => void;
 	handleBoardMousePositionChange: (event: CustomEvent<null | Point>) => void;
@@ -365,11 +366,64 @@ export const createPlayViewStateHook = createCreateSvelteHook<
 			requestEntitySelectionModeChange(requestedMode);
 		};
 
+		const requestMovingEntity = (targetPosition: Point) => {
+			playViewStateDataStore.update((oldPlayViewStateData): PlayViewStateData => {
+				const {entitySelection} = oldPlayViewStateData;
+
+				if (entitySelection === null) {
+					return oldPlayViewStateData;
+				}
+
+				if (entitySelection.mode === null) {
+					return oldPlayViewStateData;
+				}
+
+				const entityToMoveID = entitySelection.entity.id;
+
+				const newPlay: Play = {
+					...oldPlayViewStateData.play,
+					entities: oldPlayViewStateData.play.entities.map((entity): Entity => {
+						if (entity.id !== entityToMoveID) {
+							return entity;
+						}
+
+						const newDirectionRadians =
+							Math.atan2(
+								targetPosition.y - entity.position.y,
+								targetPosition.x - entity.position.x,
+							) +
+							(3 * Math.PI) / 2;
+
+						console.log(newDirectionRadians);
+
+						const newEntity: Entity = {
+							...entity,
+							directionRadians: newDirectionRadians,
+						};
+
+						return newEntity;
+					}),
+				};
+
+				return {
+					...oldPlayViewStateData,
+					play: newPlay,
+				};
+			});
+		};
+
+		const handleBoardClick = (event: CustomEvent<Point>): void => {
+			const clickPosition = event.detail;
+
+			requestMovingEntity(clickPosition);
+		};
+
 		const api: PlayViewStateHookReturnValue = {
 			cameraStore,
 			cleanupPlayViewStateHook: initialCleanupPlayViewStateHook,
 			entitySelectionStore,
 			entityWithSelectionStatusesStore,
+			handleBoardClick,
 			handleBoardDimensionsChange,
 			handleBoardEntityClicked,
 			handleBoardMousePositionChange,

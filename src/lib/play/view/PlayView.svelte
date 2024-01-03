@@ -38,6 +38,7 @@
 		<Board
 			camera={$cameraStore}
 			entityWithSelectionStatuses={$entityWithSelectionStatusesStore}
+			on:board-clicked={handleBoardClick}
 			on:dimensions-change={handleBoardDimensionsChange}
 			on:entity-clicked={handleBoardEntityClicked}
 			on:mouse-position-change={handleBoardMousePositionChange}

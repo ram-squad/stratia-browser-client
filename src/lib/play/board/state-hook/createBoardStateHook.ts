@@ -10,6 +10,7 @@ type CreateBoardStateHookArgs = readonly [
 	Readonly<{
 		dispatchEvent: Svelte.EventDispatcher<
 			Readonly<{
+				"board-clicked": Point;
 				"dimensions-change": Dimensions;
 				"entity-clicked": Entity["id"] | null;
 				"mouse-position-change": null | Point;
@@ -22,7 +23,7 @@ type CreateBoardStateHookArgs = readonly [
 type UpdateBoardStateHookArgs = readonly [];
 
 type BoardStateHookReturnValue = Readonly<{
-	handleBoardClick: () => void;
+	handleBoardClick: (event: MouseEvent) => void;
 	handleEntityClick: (event: CustomEvent<Entity>) => void;
 	handleMouseenter: (event: MouseEvent) => void;
 	handleMouseleave: () => void;
@@ -47,7 +48,7 @@ export const createBoardStateHook = createCreateSvelteHook<
 
 		const clickedEntitiesIDsAccumulatorStore = SvelteStore.writable<readonly Entity["id"][]>([]);
 
-		const handleBoardClick = (): void => {
+		const handleBoardClick = (event: MouseEvent): void => {
 			clickedEntitiesIDsAccumulatorStore.update(
 				(oldClickedEntitiesIDsAccumulator): readonly Entity["id"][] => {
 					if (oldClickedEntitiesIDsAccumulator.length > 1) {
@@ -61,6 +62,25 @@ export const createBoardStateHook = createCreateSvelteHook<
 					return [];
 				},
 			);
+
+			const boardElement = event.currentTarget as HTMLDivElement;
+
+			const clickPositionX =
+				event.clientX -
+				boardElement.getBoundingClientRect().left -
+				boardElement.getBoundingClientRect().width / 2;
+
+			const clickPositionY =
+				event.clientY -
+				boardElement.getBoundingClientRect().top -
+				boardElement.getBoundingClientRect().height / 2;
+
+			const clickPosition: Point = {
+				x: clickPositionX,
+				y: clickPositionY,
+			};
+
+			dispatchEvent("board-clicked", clickPosition);
 		};
 
 		const handleEntityClick = (event: CustomEvent<Entity>): void => {

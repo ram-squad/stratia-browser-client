@@ -34,6 +34,7 @@
 	export let camera: Camera;
 
 	const dispatchEvent = createEventDispatcher<{
+		"board-clicked": Point;
 		"dimensions-change": Dimensions;
 		"entity-clicked": Entity["id"] | null;
 		"mouse-position-change": null | Point;
