@@ -5,9 +5,10 @@
 	import type {Point} from "$lib/math/point/Point.ts";
 	import Board from "$lib/play/board/Board.svelte";
 	import type {Entity} from "$lib/play/entity/Entity.ts";
-	import type {EntitySelection} from "$lib/play/entity/selection/EntitySelection.ts";
 	import {HexGrid} from "$lib/play/tile/shapes/hex/grid/HexGrid.ts";
 	import HexTileOnBoard from "$lib/play/tile/shapes/hex/tile/on-board/HexTileOnBoard.svelte";
+	import {computeEntityWithSelectionStatusesHook} from "$lib/play/view/hooks/compute-entity-with-selection-statuses/computeEntityWithSelectionStatusesHook.ts";
+	import {createEntitySelectionStateHook} from "$lib/play/view/hooks/entity-selection-state/createEntitySelectionStateHook.ts";
 	import {createPlayStateHook} from "$lib/play/view/hooks/play-state/createPlayStateHook.ts";
 	import SelectedEntityBar from "$lib/play/view/selected-entity-bar/SelectedEntityBar.svelte";
 	import {onDestroy} from "svelte";
@@ -32,29 +33,17 @@
 
 	$: ({entities: playEntities, tiles: playTiles} = $playStore);
 
-	let requestedEntitySelectionID: null | string = null;
+	const entitySelectionStateHook = createEntitySelectionStateHook();
 
-	$: entitySelection = ((): EntitySelection | null => {
-		if (requestedEntitySelectionID === null) {
-			return null;
-		}
+	$: ({entitySelectionStore, requestDeselectingEntity, requestSelectingEntityByID} =
+		entitySelectionStateHook({
+			entities: playEntities,
+		}));
 
-		const selectedEntity = playEntities.find((entity) => entity.id === requestedEntitySelectionID);
-
-		if (selectedEntity === undefined) {
-			return null;
-		}
-
-		return {
-			entity: selectedEntity,
-		};
-	})();
-
-	$: entityWithSelectionStatuses = playEntities.map((entity) => ({
-		entity,
-		isSelected:
-			requestedEntitySelectionID === null ? false : entity.id === requestedEntitySelectionID,
-	}));
+	$: entityWithSelectionStatuses = computeEntityWithSelectionStatusesHook(
+		playEntities,
+		$entitySelectionStore,
+	);
 
 	const handleBoardMousePositionChange = (event: CustomEvent<null | Point>) => {
 		boardMousePositionPixels = event.detail;
@@ -68,12 +57,12 @@
 		const clickedEntityID = event.detail;
 
 		if (clickedEntityID === null) {
-			requestedEntitySelectionID = null;
+			requestDeselectingEntity();
 
 			return;
 		}
 
-		requestedEntitySelectionID = clickedEntityID;
+		requestSelectingEntityByID(clickedEntityID);
 	};
 
 	$: hexGrid = new HexGrid(playTiles);
@@ -83,7 +72,7 @@
 
 <main class="play-view">
 	<div class="play-view__selected-entity-bar-wrapper">
-		<SelectedEntityBar {entitySelection} />
+		<SelectedEntityBar entitySelection={$entitySelectionStore} />
 	</div>
 	<div class="play-view__board-wrapper">
 		<Board
