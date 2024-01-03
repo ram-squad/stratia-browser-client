@@ -5,6 +5,7 @@
 	import type {Point} from "$lib/math/point/Point.ts";
 	import Board from "$lib/play/board/Board.svelte";
 	import type {Entity} from "$lib/play/entity/Entity.ts";
+	import type {EntitySelectionMode} from "$lib/play/entity/selection/mode/EntitySelectionMode.ts";
 	import {HexGrid} from "$lib/play/tile/shapes/hex/grid/HexGrid.ts";
 	import HexTileOnBoard from "$lib/play/tile/shapes/hex/tile/on-board/HexTileOnBoard.svelte";
 	import {computeEntityWithSelectionStatusesHook} from "$lib/play/view/hooks/compute-entity-with-selection-statuses/computeEntityWithSelectionStatusesHook.ts";
@@ -35,10 +36,14 @@
 
 	const entitySelectionStateHook = createEntitySelectionStateHook();
 
-	$: ({entitySelectionStore, requestDeselectingEntity, requestSelectingEntityByID} =
-		entitySelectionStateHook({
-			entities: playEntities,
-		}));
+	$: ({
+		entitySelectionStore,
+		requestDeselectingEntity,
+		requestEntitySelectionModeChange,
+		requestSelectingEntityByID,
+	} = entitySelectionStateHook({
+		entities: playEntities,
+	}));
 
 	$: entityWithSelectionStatuses = computeEntityWithSelectionStatusesHook(
 		playEntities,
@@ -51,6 +56,14 @@
 
 	const handleBoardMousePositionChange = (event: CustomEvent<null | Point>) => {
 		boardMousePositionPixels = event.detail;
+	};
+
+	const handleEntitySelectionModeChangeRequested = (
+		event: CustomEvent<EntitySelectionMode | null>,
+	) => {
+		const requestedMode = event.detail;
+
+		requestEntitySelectionModeChange(requestedMode);
 	};
 
 	const handleBoardDimensionsChange = (event: CustomEvent<Dimensions>) => {
@@ -76,7 +89,10 @@
 
 <main class="play-view">
 	<div class="play-view__selected-entity-bar-wrapper">
-		<SelectedEntityBar entitySelection={$entitySelectionStore} />
+		<SelectedEntityBar
+			entitySelection={$entitySelectionStore}
+			on:mode-change-requested={handleEntitySelectionModeChangeRequested}
+		/>
 	</div>
 	<div class="play-view__board-wrapper">
 		<Board
