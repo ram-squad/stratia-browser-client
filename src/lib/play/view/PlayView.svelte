@@ -22,7 +22,14 @@
 
 	const playStateHook = createPlayStateHook();
 
-	$: ({cameraStore, destroyPlayState, playStore, requestEntityMove, updateZoom} = playStateHook({
+	$: ({
+		cameraStore,
+		createTilePositionFromRealPosition,
+		destroyPlayState,
+		playStore,
+		requestEntityMove,
+		updateZoom,
+	} = playStateHook({
 		boardDimensionsPixels,
 		boardMousePositionPixels,
 		playID,
@@ -91,7 +98,7 @@
 
 		const clickPosition = event.detail;
 
-		requestEntityMove(entityToMoveID, clickPosition);
+		requestEntityMove(entityToMoveID, createTilePositionFromRealPosition(clickPosition).real);
 	};
 
 	$: hexGrid = new HexGrid(playTiles);
