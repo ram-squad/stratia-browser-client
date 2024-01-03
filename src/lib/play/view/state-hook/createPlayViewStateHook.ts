@@ -387,18 +387,9 @@ export const createPlayViewStateHook = createCreateSvelteHook<
 							return entity;
 						}
 
-						const newDirectionRadians =
-							Math.atan2(
-								targetPosition.y - entity.position.y,
-								targetPosition.x - entity.position.x,
-							) +
-							(3 * Math.PI) / 2;
-
-						console.log(newDirectionRadians);
-
 						const newEntity: Entity = {
 							...entity,
-							directionRadians: newDirectionRadians,
+							targetPosition,
 						};
 
 						return newEntity;

@@ -4,18 +4,30 @@ import type {Entity} from "$lib/play/entity/Entity.ts";
 export function computePlayTick(play: Play, deltaTimeSeconds: number): Play {
 	return {
 		...play,
-		entities: play.entities.map(
-			(entity): Entity => ({
+		entities: play.entities.map((entity): Entity => {
+			const newDirectionRadians =
+				entity.targetPosition === null
+					? entity.directionRadians
+					: Math.atan2(
+							entity.targetPosition.y - entity.position.y,
+							entity.targetPosition.x - entity.position.x,
+						) +
+						(Math.PI * 3) / 2;
+
+			const updatedEntity: Entity = {
 				...entity,
+				directionRadians: newDirectionRadians,
 				position: {
 					x:
 						entity.position.x -
-						Math.sin(entity.directionRadians) * entity.speedPerSecond * deltaTimeSeconds,
+						Math.sin(newDirectionRadians) * entity.speedPerSecond * deltaTimeSeconds,
 					y:
 						entity.position.y +
-						Math.cos(entity.directionRadians) * entity.speedPerSecond * deltaTimeSeconds,
+						Math.cos(newDirectionRadians) * entity.speedPerSecond * deltaTimeSeconds,
 				},
-			}),
-		),
+			};
+
+			return updatedEntity;
+		}),
 	};
 }
