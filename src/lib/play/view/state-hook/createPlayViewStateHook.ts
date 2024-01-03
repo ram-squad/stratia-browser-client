@@ -7,6 +7,7 @@ import type {Camera} from "$lib/play/camera/Camera.ts";
 import {computeCameraTick} from "$lib/play/camera/tick/computeCameraTick.ts";
 import type {Entity} from "$lib/play/entity/Entity.ts";
 import type {EntitySelection} from "$lib/play/entity/selection/EntitySelection.ts";
+import type {EntitySelectionMode} from "$lib/play/entity/selection/mode/EntitySelectionMode.ts";
 import {loadPlayFromLocalStorage} from "$lib/play/local-storage/loadPlayFromLocalStorage.ts";
 import {computePlayTick} from "$lib/play/tick/computePlayTick.ts";
 import type {TileWithNeighbors} from "$lib/play/tile/TileWithNeighbors.ts";
@@ -148,6 +149,9 @@ type PlayViewStateHookReturnValue = Readonly<{
 	handleBoardEntityClicked: (event: CustomEvent<Entity["id"] | null>) => void;
 	handleBoardMousePositionChange: (event: CustomEvent<null | Point>) => void;
 	handleBoardMouseScrolled: (event: CustomEvent<number>) => void;
+	handleEntitySelectionModeChangeRequested: (
+		event: CustomEvent<EntitySelectionMode | null>,
+	) => void;
 	handleZoomInButtonClick: () => void;
 	handleZoomOutButtonClick: () => void;
 	tileWithNeighborsStore: Readable<readonly TileWithNeighbors<HexTilePosition, HexTileSideKey>[]>;
@@ -333,6 +337,34 @@ export const createPlayViewStateHook = createCreateSvelteHook<
 			updateZoom(scrollDelta);
 		};
 
+		const requestEntitySelectionModeChange = (newMode: EntitySelectionMode | null) => {
+			playViewStateDataStore.update((oldPlayViewStateData): PlayViewStateData => {
+				const {entitySelection: oldEntitySelection} = oldPlayViewStateData;
+
+				if (oldEntitySelection === null) {
+					return oldPlayViewStateData;
+				}
+
+				const newEntitySelection: EntitySelection = {
+					...oldEntitySelection,
+					mode: newMode,
+				};
+
+				return {
+					...oldPlayViewStateData,
+					entitySelection: newEntitySelection,
+				};
+			});
+		};
+
+		const handleEntitySelectionModeChangeRequested = (
+			event: CustomEvent<EntitySelectionMode | null>,
+		) => {
+			const requestedMode = event.detail;
+
+			requestEntitySelectionModeChange(requestedMode);
+		};
+
 		const api: PlayViewStateHookReturnValue = {
 			cameraStore,
 			cleanupPlayViewStateHook: initialCleanupPlayViewStateHook,
@@ -342,6 +374,7 @@ export const createPlayViewStateHook = createCreateSvelteHook<
 			handleBoardEntityClicked,
 			handleBoardMousePositionChange,
 			handleBoardMouseScrolled,
+			handleEntitySelectionModeChangeRequested,
 			handleZoomInButtonClick,
 			handleZoomOutButtonClick,
 			tileWithNeighborsStore,

@@ -18,6 +18,7 @@
 		handleBoardEntityClicked,
 		handleBoardMousePositionChange,
 		handleBoardMouseScrolled,
+		handleEntitySelectionModeChangeRequested,
 		handleZoomInButtonClick,
 		handleZoomOutButtonClick,
 		tileWithNeighborsStore,
@@ -28,7 +29,10 @@
 
 <main class="play-view">
 	<div class="play-view__selected-entity-bar-wrapper">
-		<SelectedEntityBar entitySelection={$entitySelectionStore} />
+		<SelectedEntityBar
+			entitySelection={$entitySelectionStore}
+			on:mode-change-requested={handleEntitySelectionModeChangeRequested}
+		/>
 	</div>
 	<div class="play-view__board-wrapper">
 		<Board
