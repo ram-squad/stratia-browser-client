@@ -7,6 +7,7 @@
 >
 	import type {Dimensions} from "$lib/math/dimensions/Dimensions.ts";
 	import type {Point} from "$lib/math/point/Point.ts";
+	import type {EntityWithSelectionStatus} from "$lib/play/board/entity-with-selection-status/EntityWithSelectionStatus.ts";
 	import {createEntityClickedHook} from "$lib/play/board/hooks/entity-clicked/createEntityClickedHook.ts";
 	import {createMousePositionChangedHook} from "$lib/play/board/hooks/mouse-position-changed/createMousePositionChangedHook.ts";
 	import {createObserveDimensionsHook} from "$lib/play/board/hooks/observe-dimensions/createObserveDimensionsHook.ts";
@@ -28,10 +29,7 @@
 		}>;
 	}
 
-	export let entityWithSelectionStatuses: readonly Readonly<{
-		entity: Entity;
-		isSelected: boolean;
-	}>[];
+	export let entityWithSelectionStatuses: readonly EntityWithSelectionStatus[];
 
 	export let tileWithNeighbors: readonly TileWithNeighbors<TilePositionInTile, TileSideKey>[];
 

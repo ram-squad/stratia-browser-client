@@ -3,78 +3,47 @@
 <script lang="ts" strictEvents>
 	import type {Dimensions} from "$lib/math/dimensions/Dimensions.ts";
 	import type {Point} from "$lib/math/point/Point.ts";
-	import {convertSecondsToMiliseconds} from "$lib/math/time/convertSecondsToMiliseconds.ts";
 	import Board from "$lib/play/board/Board.svelte";
-	import type {Camera} from "$lib/play/camera/Camera.ts";
-	import {computeCameraTick} from "$lib/play/camera/tick/computeCameraTick.ts";
 	import type {Entity} from "$lib/play/entity/Entity.ts";
-	import {loadPlayFromLocalStorage} from "$lib/play/local-storage/loadPlayFromLocalStorage.ts";
-	import {computePlayTick} from "$lib/play/tick/computePlayTick.ts";
 	import {HexGrid} from "$lib/play/tile/shapes/hex/grid/HexGrid.ts";
 	import HexTileOnBoard from "$lib/play/tile/shapes/hex/tile/on-board/HexTileOnBoard.svelte";
+	import {computeEntityWithSelectionStatusesHook} from "$lib/play/view/hooks/compute-entity-with-selection-statuses/computeEntityWithSelectionStatusesHook.ts";
+	import {createEntitySelectionStateHook} from "$lib/play/view/hooks/entity-selection-state/createEntitySelectionStateHook.ts";
+	import {createPlayStateHook} from "$lib/play/view/hooks/play-state/createPlayStateHook.ts";
 	import SelectedEntityBar from "$lib/play/view/selected-entity-bar/SelectedEntityBar.svelte";
 	import {onDestroy} from "svelte";
 
 	export let playID: string;
 
-	const tickIntervalSeconds = 0.1;
-	let lastPlayID = playID;
-	let play = loadPlayFromLocalStorage(playID);
-
-	let requestedEntitySelectionID: null | string = null;
-
-	$: selectedEntity =
-		requestedEntitySelectionID === null
-			? null
-			: play.entities.find((entity) => entity.id === requestedEntitySelectionID) ?? null;
-
-	$: entityWithSelectionStatuses = play.entities.map((entity) => ({
-		entity,
-		isSelected:
-			requestedEntitySelectionID === null ? false : entity.id === requestedEntitySelectionID,
-	}));
-
-	let camera: Camera = {
-		position: {
-			x: 0,
-			y: 0,
-		},
-		zoomFactor: 20,
-	};
-
 	let boardMousePositionPixels: null | Point = null;
 
 	let boardDimensionsPixels: Dimensions | null = null;
 
-	const tick = () => {
-		play = computePlayTick(play, tickIntervalSeconds);
+	const playStateHook = createPlayStateHook();
 
-		camera = computeCameraTick(
-			camera,
-			boardMousePositionPixels,
-			boardDimensionsPixels,
-			tickIntervalSeconds,
-		);
-	};
-
-	const setupTickInterval = () =>
-		setInterval(tick, convertSecondsToMiliseconds(tickIntervalSeconds));
-
-	let tickIntervalID = setupTickInterval();
-
-	$: if (lastPlayID !== playID) {
-		play = loadPlayFromLocalStorage(playID);
-
-		clearInterval(tickIntervalID);
-
-		tickIntervalID = setupTickInterval();
-
-		lastPlayID = playID;
-	}
+	$: ({cameraStore, destroyPlayState, playStore} = playStateHook({
+		boardDimensionsPixels,
+		boardMousePositionPixels,
+		playID,
+	}));
 
 	onDestroy(() => {
-		clearInterval(tickIntervalID);
+		destroyPlayState();
 	});
+
+	$: ({entities: playEntities, tiles: playTiles} = $playStore);
+
+	const entitySelectionStateHook = createEntitySelectionStateHook();
+
+	$: ({entitySelectionStore, requestDeselectingEntity, requestSelectingEntityByID} =
+		entitySelectionStateHook({
+			entities: playEntities,
+		}));
+
+	$: entityWithSelectionStatuses = computeEntityWithSelectionStatusesHook(
+		playEntities,
+		$entitySelectionStore,
+	);
 
 	const handleBoardMousePositionChange = (event: CustomEvent<null | Point>) => {
 		boardMousePositionPixels = event.detail;
@@ -88,15 +57,13 @@
 		const clickedEntityID = event.detail;
 
 		if (clickedEntityID === null) {
-			requestedEntitySelectionID = null;
+			requestDeselectingEntity();
 
 			return;
 		}
 
-		requestedEntitySelectionID = clickedEntityID;
+		requestSelectingEntityByID(clickedEntityID);
 	};
-
-	$: playTiles = play.tiles;
 
 	$: hexGrid = new HexGrid(playTiles);
 
@@ -105,11 +72,11 @@
 
 <main class="play-view">
 	<div class="play-view__selected-entity-bar-wrapper">
-		<SelectedEntityBar {selectedEntity} />
+		<SelectedEntityBar entitySelection={$entitySelectionStore} />
 	</div>
 	<div class="play-view__board-wrapper">
 		<Board
-			{camera}
+			camera={$cameraStore}
 			{entityWithSelectionStatuses}
 			on:dimensions-change={handleBoardDimensionsChange}
 			on:entity-clicked={handleEntityClicked}
