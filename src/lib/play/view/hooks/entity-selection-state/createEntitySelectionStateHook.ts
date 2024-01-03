@@ -1,10 +1,12 @@
 import type {Entity} from "$lib/play/entity/Entity.ts";
 import type {EntitySelection} from "$lib/play/entity/selection/EntitySelection.ts";
+import type {EntitySelectionMode} from "$lib/play/entity/selection/mode/EntitySelectionMode.ts";
 import {writable, type Readable} from "svelte/store";
 
 type EntitySelectionStateHookAPI = Readonly<{
 	entitySelectionStore: Readable<EntitySelection | null>;
 	requestDeselectingEntity: () => void;
+	requestEntitySelectionModeChange: (newMode: EntitySelectionMode | null) => void;
 	requestSelectingEntityByID: (entityToSelectID: Entity["id"]) => void;
 }>;
 
@@ -44,9 +46,23 @@ export function createEntitySelectionStateHook(): EntitySelectionStateHook {
 			entitySelectionStore.set(newEntitySelection);
 		};
 
+		const requestEntitySelectionModeChange = (newMode: EntitySelectionMode | null) => {
+			entitySelectionStore.update((oldEntitySelection) => {
+				if (oldEntitySelection === null) {
+					return oldEntitySelection;
+				}
+
+				return {
+					...oldEntitySelection,
+					mode: newMode,
+				};
+			});
+		};
+
 		const api: EntitySelectionStateHookAPI = {
 			entitySelectionStore,
 			requestDeselectingEntity,
+			requestEntitySelectionModeChange,
 			requestSelectingEntityByID,
 		};
 
