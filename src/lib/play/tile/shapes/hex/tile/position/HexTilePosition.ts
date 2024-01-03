@@ -16,7 +16,7 @@ export class HexTilePosition implements TilePosition {
 	}
 
 	public static createFromRealPosition(realPosition: Point): HexTilePosition {
-		const x = realPosition.x / 3 ** 0.5;
+		const x = Math.round((realPosition.x / 3 ** 0.5) * 2);
 
 		const y = realPosition.y - calculateModuloRespectiveToDividend(x, 2) / 2;
 
