@@ -4,6 +4,7 @@ import {convertSecondsToMiliseconds} from "$lib/math/time/convertSecondsToMilise
 import type {Play} from "$lib/play/Play.ts";
 import type {Camera} from "$lib/play/camera/Camera.ts";
 import {computeCameraTick} from "$lib/play/camera/tick/computeCameraTick.ts";
+import type {Entity} from "$lib/play/entity/Entity.ts";
 import {loadPlayFromLocalStorage} from "$lib/play/local-storage/loadPlayFromLocalStorage.ts";
 import {computePlayTick} from "$lib/play/tick/computePlayTick.ts";
 import {writable, type Readable} from "svelte/store";
@@ -29,6 +30,7 @@ type PlayStateHook = (
 	destroyPlayState: () => void;
 	playStore: Readable<Play>;
 	updateZoom: (scrollAmount: number) => void;
+	requestEntityMove: (entityToMoveID: string, targetPosition: Point) => void;
 }>;
 
 export function createPlayStateHook(): PlayStateHook {
@@ -63,6 +65,30 @@ export function createPlayStateHook(): PlayStateHook {
 					scrollDelta > 0
 						? Math.min(oldCamera.zoomFactor * 2, 200)
 						: Math.max(oldCamera.zoomFactor / 2, 1),
+			}));
+		};
+
+		const requestEntityMove = (entityToMoveID: string, targetPosition: Point) => {
+			playStore.update((oldPlay) => ({
+				...oldPlay,
+				entities: oldPlay.entities.map((entity) => {
+					if (entity.id !== entityToMoveID) {
+						return entity;
+					}
+
+					const newDirectionRadians =
+						Math.atan2(targetPosition.y - entity.position.y, targetPosition.x - entity.position.x) +
+						(3 * Math.PI) / 2;
+
+					console.log(newDirectionRadians);
+
+					const newEntity: Entity = {
+						...entity,
+						directionRadians: newDirectionRadians,
+					};
+
+					return newEntity;
+				}),
 			}));
 		};
 
@@ -110,6 +136,7 @@ export function createPlayStateHook(): PlayStateHook {
 			cameraStore,
 			destroyPlayState,
 			playStore,
+			requestEntityMove,
 			updateZoom,
 		} as const;
 

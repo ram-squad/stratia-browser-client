@@ -8,6 +8,7 @@
 	import type {Dimensions} from "$lib/math/dimensions/Dimensions.ts";
 	import type {Point} from "$lib/math/point/Point.ts";
 	import type {EntityWithSelectionStatus} from "$lib/play/board/entity-with-selection-status/EntityWithSelectionStatus.ts";
+	import {createBoardClickedHook} from "$lib/play/board/hooks/board-clicked/createBoardClickedHook.ts";
 	import {createEntityClickedHook} from "$lib/play/board/hooks/entity-clicked/createEntityClickedHook.ts";
 	import {createMousePositionChangedHook} from "$lib/play/board/hooks/mouse-position-changed/createMousePositionChangedHook.ts";
 	import {createObserveDimensionsHook} from "$lib/play/board/hooks/observe-dimensions/createObserveDimensionsHook.ts";
@@ -36,6 +37,7 @@
 	export let camera: Camera;
 
 	const dispatchEvent = createEventDispatcher<{
+		"board-clicked": Point;
 		"dimensions-change": Dimensions;
 		"entity-clicked": Entity["id"] | null;
 		"mouse-position-change": null | Point;
@@ -46,7 +48,20 @@
 		dispatchEvent("mouse-scrolled", event.deltaY);
 	};
 
-	const {handleBoardClick, handleEntityClick} = createEntityClickedHook(dispatchEvent);
+	const boardClickedHook = createBoardClickedHook(dispatchEvent);
+
+	$: ({handleBoardClick: handleBoardClick1} = boardClickedHook({
+		camera,
+	}));
+
+	const {handleBoardClick: handleBoardClick2, handleEntityClick} =
+		createEntityClickedHook(dispatchEvent);
+
+	const handleBoardClick = (event: MouseEvent) => {
+		handleBoardClick1(event);
+
+		handleBoardClick2();
+	};
 
 	const {handleMouseenter, handleMouseleave, handleMousemove} =
 		createMousePositionChangedHook(dispatchEvent);

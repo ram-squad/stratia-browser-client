@@ -22,7 +22,7 @@
 
 	const playStateHook = createPlayStateHook();
 
-	$: ({cameraStore, destroyPlayState, playStore, updateZoom} = playStateHook({
+	$: ({cameraStore, destroyPlayState, playStore, requestEntityMove, updateZoom} = playStateHook({
 		boardDimensionsPixels,
 		boardMousePositionPixels,
 		playID,
@@ -82,6 +82,18 @@
 		requestSelectingEntityByID(clickedEntityID);
 	};
 
+	const handleBoardClick = (event: CustomEvent<Point>) => {
+		if ($entitySelectionStore === null || $entitySelectionStore.mode !== null) {
+			return;
+		}
+
+		const entityToMoveID = $entitySelectionStore.entity.id;
+
+		const clickPosition = event.detail;
+
+		requestEntityMove(entityToMoveID, clickPosition);
+	};
+
 	$: hexGrid = new HexGrid(playTiles);
 
 	$: tileWithNeighbors = Array.from(hexGrid.iterateHexTilesWithNeighbors());
@@ -98,6 +110,7 @@
 		<Board
 			camera={$cameraStore}
 			{entityWithSelectionStatuses}
+			on:board-clicked={handleBoardClick}
 			on:dimensions-change={handleBoardDimensionsChange}
 			on:entity-clicked={handleEntityClicked}
 			on:mouse-position-change={handleBoardMousePositionChange}
