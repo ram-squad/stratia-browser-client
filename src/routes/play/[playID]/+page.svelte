@@ -6,6 +6,7 @@
 	import PlayView from "$lib/play/view/PlayView.svelte";
 
 	const {page} = AppStores;
+
 	$: ({playID} = $page.params);
 </script>
 
