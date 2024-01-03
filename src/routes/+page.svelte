@@ -5,7 +5,7 @@
 	import WelcomeView from "$lib/welcome-view/WelcomeView.svelte";
 
 	const gotoPlay = async (playID: string) => {
-		await AppNavigation.goto(`/play/${playID}`);
+		await AppNavigation.goto(`/plays/${playID}`);
 	};
 </script>
 
