@@ -4,8 +4,12 @@ import {convertSecondsToMiliseconds} from "$lib/math/time/convertSecondsToMilise
 import type {Play} from "$lib/play/Play.ts";
 import type {Camera} from "$lib/play/camera/Camera.ts";
 import {computeCameraTick} from "$lib/play/camera/tick/computeCameraTick.ts";
+import type {Entity} from "$lib/play/entity/Entity.ts";
 import {loadPlayFromLocalStorage} from "$lib/play/local-storage/loadPlayFromLocalStorage.ts";
 import {computePlayTick} from "$lib/play/tick/computePlayTick.ts";
+import type {CreateTilePositionFromRealPosition} from "$lib/play/tile/position/create-from-real-position/CreateTilePositionFromRealPosition.ts";
+import type {HexTilePosition} from "$lib/play/tile/shapes/hex/tile/position/HexTilePosition.ts";
+import {createHexTilePositionFromRealPosition} from "$lib/play/tile/shapes/hex/tile/position/create-from-real-position/createHexTilePositionFromRealPosition.ts";
 import {writable, type Readable} from "svelte/store";
 
 const tickIntervalSeconds = 0.05;
@@ -26,9 +30,11 @@ type PlayStateHook = (
 	}>,
 ) => Readonly<{
 	cameraStore: Readable<Camera>;
+	createTilePositionFromRealPosition: CreateTilePositionFromRealPosition<HexTilePosition>;
 	destroyPlayState: () => void;
 	playStore: Readable<Play>;
 	updateZoom: (scrollAmount: number) => void;
+	requestEntityMove: (entityToMoveID: string, targetPosition: Point) => void;
 }>;
 
 export function createPlayStateHook(): PlayStateHook {
@@ -63,6 +69,24 @@ export function createPlayStateHook(): PlayStateHook {
 					scrollDelta > 0
 						? Math.min(oldCamera.zoomFactor * 2, 200)
 						: Math.max(oldCamera.zoomFactor / 2, 1),
+			}));
+		};
+
+		const requestEntityMove = (entityToMoveID: string, targetPosition: Point) => {
+			playStore.update((oldPlay) => ({
+				...oldPlay,
+				entities: oldPlay.entities.map((entity) => {
+					if (entity.id !== entityToMoveID) {
+						return entity;
+					}
+
+					const newEntity: Entity = {
+						...entity,
+						targetPosition,
+					};
+
+					return newEntity;
+				}),
 			}));
 		};
 
@@ -108,8 +132,10 @@ export function createPlayStateHook(): PlayStateHook {
 
 		const api = {
 			cameraStore,
+			createTilePositionFromRealPosition: createHexTilePositionFromRealPosition,
 			destroyPlayState,
 			playStore,
+			requestEntityMove,
 			updateZoom,
 		} as const;
 

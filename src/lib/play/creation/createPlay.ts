@@ -16,6 +16,7 @@ export function createPlay(): Play {
 					y: 0,
 				},
 				speedPerSecond: 2,
+				targetPosition: null,
 			},
 			{
 				directionRadians: 1,
@@ -27,6 +28,7 @@ export function createPlay(): Play {
 					y: 1,
 				},
 				speedPerSecond: 1,
+				targetPosition: null,
 			},
 		],
 		id: generateNewPlayID(),

@@ -1,10 +1,12 @@
 import type {Entity} from "$lib/play/entity/Entity.ts";
 import type {EntitySelection} from "$lib/play/entity/selection/EntitySelection.ts";
+import type {EntitySelectionMode} from "$lib/play/entity/selection/mode/EntitySelectionMode.ts";
 import {writable, type Readable} from "svelte/store";
 
 type EntitySelectionStateHookAPI = Readonly<{
 	entitySelectionStore: Readable<EntitySelection | null>;
 	requestDeselectingEntity: () => void;
+	requestEntitySelectionModeChange: (newMode: EntitySelectionMode | null) => void;
 	requestSelectingEntityByID: (entityToSelectID: Entity["id"]) => void;
 }>;
 
@@ -14,16 +16,10 @@ type EntitySelectionStateHook = (
 	}>,
 ) => EntitySelectionStateHookAPI;
 
-function computeEntitySelection(entities: readonly Entity[], entityToSelectID: Entity["id"]) {
-	const entityToSelect = entities.find((entity) => entity.id === entityToSelectID);
+function findEntityInListByID(entities: readonly Entity[], entityToFindID: Entity["id"]) {
+	const foundEntity = entities.find((entity) => entity.id === entityToFindID);
 
-	if (entityToSelect === undefined) {
-		return null;
-	}
-
-	return {
-		entity: entityToSelect,
-	};
+	return foundEntity ?? null;
 }
 
 export function createEntitySelectionStateHook(): EntitySelectionStateHook {
@@ -37,14 +33,36 @@ export function createEntitySelectionStateHook(): EntitySelectionStateHook {
 		};
 
 		const requestSelectingEntityByID = (entityToSelectID: Entity["id"]) => {
-			const newEntitySelection = computeEntitySelection(currentValues.entities, entityToSelectID);
+			const entityToSelect = findEntityInListByID(currentValues.entities, entityToSelectID);
+
+			const newEntitySelection =
+				entityToSelect === null
+					? null
+					: {
+							entity: entityToSelect,
+							mode: null,
+						};
 
 			entitySelectionStore.set(newEntitySelection);
+		};
+
+		const requestEntitySelectionModeChange = (newMode: EntitySelectionMode | null) => {
+			entitySelectionStore.update((oldEntitySelection) => {
+				if (oldEntitySelection === null) {
+					return oldEntitySelection;
+				}
+
+				return {
+					...oldEntitySelection,
+					mode: newMode,
+				};
+			});
 		};
 
 		const api: EntitySelectionStateHookAPI = {
 			entitySelectionStore,
 			requestDeselectingEntity,
+			requestEntitySelectionModeChange,
 			requestSelectingEntityByID,
 		};
 
@@ -57,7 +75,16 @@ export function createEntitySelectionStateHook(): EntitySelectionStateHook {
 
 					const oldSelectedEntity = oldEntitySelection.entity;
 
-					return computeEntitySelection(newValues.entities, oldSelectedEntity.id);
+					const newSelectedEntity = findEntityInListByID(newValues.entities, oldSelectedEntity.id);
+
+					if (newSelectedEntity === null) {
+						return null;
+					}
+
+					return {
+						...oldEntitySelection,
+						entity: newSelectedEntity,
+					};
 				});
 			}
 
