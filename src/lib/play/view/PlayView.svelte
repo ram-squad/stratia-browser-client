@@ -93,6 +93,10 @@
 			</svelte:fragment>
 		</Board>
 	</div>
+	<div>
+		<input type="button" value="zoom+" on:click={() => updateZoom(1)}>
+		<input type="button" value="zoom-" on:click={() => updateZoom(-1)}>
+	</div>
 </main>
 
 <style lang="scss">
