@@ -90,7 +90,7 @@
 	};
 
 	const handleBoardClick = (event: CustomEvent<Point>) => {
-		if ($entitySelectionStore === null || $entitySelectionStore.mode !== null) {
+		if ($entitySelectionStore === null || $entitySelectionStore.mode === null) {
 			return;
 		}
 
