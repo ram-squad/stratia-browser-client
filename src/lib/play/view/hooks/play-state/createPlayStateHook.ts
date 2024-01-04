@@ -28,6 +28,7 @@ type PlayStateHook = (
 	cameraStore: Readable<Camera>;
 	destroyPlayState: () => void;
 	playStore: Readable<Play>;
+	updateZoom: (scrollAmount: number) => void;
 }>;
 
 export function createPlayStateHook(): PlayStateHook {
@@ -53,6 +54,16 @@ export function createPlayStateHook(): PlayStateHook {
 					tickIntervalSeconds,
 				),
 			);
+		};
+
+		const updateZoom = (scrollDelta: number) => {
+			cameraStore.update((oldCamera) => ({
+				...oldCamera,
+				zoomFactor:
+					scrollDelta > 0
+						? Math.min(oldCamera.zoomFactor * 2, 200)
+						: Math.max(oldCamera.zoomFactor / 2, 1),
+			}));
 		};
 
 		let playTickIntervalID = setInterval(
@@ -99,6 +110,7 @@ export function createPlayStateHook(): PlayStateHook {
 			cameraStore,
 			destroyPlayState,
 			playStore,
+			updateZoom,
 		} as const;
 
 		updateHandler = (newValues) => {

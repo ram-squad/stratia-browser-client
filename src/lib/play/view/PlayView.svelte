@@ -21,7 +21,7 @@
 
 	const playStateHook = createPlayStateHook();
 
-	$: ({cameraStore, destroyPlayState, playStore} = playStateHook({
+	$: ({cameraStore, destroyPlayState, playStore, updateZoom} = playStateHook({
 		boardDimensionsPixels,
 		boardMousePositionPixels,
 		playID,
@@ -44,6 +44,10 @@
 		playEntities,
 		$entitySelectionStore,
 	);
+
+	const handleBoardMouseScrolled = (event: CustomEvent<number>) => {
+		updateZoom(event.detail);
+	};
 
 	const handleBoardMousePositionChange = (event: CustomEvent<null | Point>) => {
 		boardMousePositionPixels = event.detail;
@@ -81,12 +85,29 @@
 			on:dimensions-change={handleBoardDimensionsChange}
 			on:entity-clicked={handleEntityClicked}
 			on:mouse-position-change={handleBoardMousePositionChange}
+			on:mouse-scrolled={handleBoardMouseScrolled}
 			{tileWithNeighbors}
 		>
 			<svelte:fragment let:layoutStylesCalculationPrecission let:neighbors let:tile slot="tile">
 				<HexTileOnBoard {layoutStylesCalculationPrecission} {neighbors} {tile} />
 			</svelte:fragment>
 		</Board>
+	</div>
+	<div>
+		<input
+			on:click={() => {
+				updateZoom(1);
+			}}
+			type="button"
+			value="zoom+"
+		/>
+		<input
+			on:click={() => {
+				updateZoom(-1);
+			}}
+			type="button"
+			value="zoom-"
+		/>
 	</div>
 </main>
 
