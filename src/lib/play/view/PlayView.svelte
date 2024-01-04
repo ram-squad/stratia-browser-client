@@ -21,7 +21,7 @@
 
 	const playStateHook = createPlayStateHook();
 
-	$: ({cameraStore, destroyPlayState, updateZoom, playStore} = playStateHook({
+	$: ({cameraStore, destroyPlayState, playStore, updateZoom} = playStateHook({
 		boardDimensionsPixels,
 		boardMousePositionPixels,
 		playID,
@@ -94,8 +94,8 @@
 		</Board>
 	</div>
 	<div>
-		<input type="button" value="zoom+" on:click={() => updateZoom(1)}>
-		<input type="button" value="zoom-" on:click={() => updateZoom(-1)}>
+		<input on:click={() => { updateZoom(1); }} type="button" value="zoom+">
+		<input on:click={() => { updateZoom(-1); }} type="button" value="zoom-">
 	</div>
 </main>
 
