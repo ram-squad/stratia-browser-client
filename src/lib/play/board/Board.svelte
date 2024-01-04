@@ -39,12 +39,12 @@
 		"dimensions-change": Dimensions;
 		"entity-clicked": Entity["id"] | null;
 		"mouse-position-change": null | Point;
-		"mouse-scrolled": number
+		"mouse-scrolled": number;
 	}>();
 
 	const handleScroll = (event: WheelEvent) => {
-		dispatchEvent('mouse-scrolled', event.deltaY)
-	}
+		dispatchEvent("mouse-scrolled", event.deltaY);
+	};
 
 	const {handleBoardClick, handleEntityClick} = createEntityClickedHook(dispatchEvent);
 
@@ -60,7 +60,7 @@
 	on:mouseenter={handleMouseenter}
 	on:mouseleave={handleMouseleave}
 	on:mousemove={handleMousemove}
-	on:wheel = {handleScroll}
+	on:wheel={handleScroll}
 	role="presentation"
 	use:observeDimensionsHook
 >

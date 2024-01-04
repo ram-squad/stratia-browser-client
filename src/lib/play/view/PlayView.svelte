@@ -46,8 +46,8 @@
 	);
 
 	const handleBoardMouseScrolled = (event: CustomEvent<number>) => {
-		updateZoom(event.detail)
-	}
+		updateZoom(event.detail);
+	};
 
 	const handleBoardMousePositionChange = (event: CustomEvent<null | Point>) => {
 		boardMousePositionPixels = event.detail;
@@ -94,8 +94,20 @@
 		</Board>
 	</div>
 	<div>
-		<input on:click={() => { updateZoom(1); }} type="button" value="zoom+">
-		<input on:click={() => { updateZoom(-1); }} type="button" value="zoom-">
+		<input
+			on:click={() => {
+				updateZoom(1);
+			}}
+			type="button"
+			value="zoom+"
+		/>
+		<input
+			on:click={() => {
+				updateZoom(-1);
+			}}
+			type="button"
+			value="zoom-"
+		/>
 	</div>
 </main>
 
