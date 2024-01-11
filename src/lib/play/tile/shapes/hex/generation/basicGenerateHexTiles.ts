@@ -11,14 +11,16 @@ export function basicGenerateHexTiles(): readonly HexTile[] {
 
 	// Wielki okrąg o jednym typie terenu
 	const center: Point = {
-x: 0, y: 0
-};
+		x: 0,
+		y: 0,
+	};
 
 	const radius = 20;
 
 	const mainCircle: Circle = {
-center, radius
-};
+		center,
+		radius,
+	};
 
 	const mainLandType = "water"; // Domyślny typ terenu
 
@@ -32,8 +34,9 @@ center, radius
 	for (let y = -radius; y <= radius; y++) {
 		for (let x = -radius; x <= radius; x++) {
 			const hexTilePosition = new HexTilePosition({
-x, y
-});
+				x,
+				y,
+			});
 
 			// Sprawdzanie, czy punkt należy do głównego okręgu
 			if (checkIfPointIsInsideOfCircle(hexTilePosition.real, mainCircle) >= 0) {
