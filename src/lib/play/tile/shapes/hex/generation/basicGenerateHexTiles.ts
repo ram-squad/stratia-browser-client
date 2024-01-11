@@ -1,113 +1,48 @@
 import type {Circle} from "$lib/math/circle/Circle.ts";
 import {checkIfPointIsInsideOfCircle} from "$lib/math/circle/checkIfPointIsInsideOfCircle.ts";
-import type {Point} from "$lib/math/point/Point.ts";
 import {Tile} from "$lib/play/tile/Tile.ts";
-import type {HexTile} from "$lib/play/tile/shapes/hex/tile/HexTile.ts";
 import {HexTilePosition} from "$lib/play/tile/shapes/hex/tile/position/HexTilePosition.ts";
+import {generatePerlinNoise} from "$lib/math/noise/perlinNoise.ts";
+import type {Point} from "$lib/math/point/Point.ts";
+import type {HexTile} from "../tile/HexTile.ts";
 
 export function basicGenerateHexTiles(): readonly HexTile[] {
 	const tiles: HexTile[] = [];
 
-	const circleWithLandTypes: readonly Readonly<{
-		circle: Circle;
-		landType: HexTile["data"]["landType"];
-	}>[] = Array(20 + Math.floor(Math.random() * 20))
-		.fill(null)
-		.map(() => {
-			const center: Point = {
-				x: Math.random() * 16 - 8,
-				y: Math.random() * 16 - 8,
-			};
+	// Wielki okrąg o jednym typie terenu
+	const center: Point = {x: 0, y: 0};
+	const radius = 20;
+	const mainCircle: Circle = {center, radius};
+	const mainLandType = "water"; // Domyślny typ terenu
 
-			const radius = Math.random() * 10;
+	// Generowanie szumu Perlina
+	const perlinScale = 0.2; // Skala szumu Perlina
+	const perlinOffsetX = Math.random() * 1000;
+	const perlinOffsetY = Math.random() * 1000;
 
-			const landType = Math.random() < 0.3 ? "water" : "dirt";
+	for (let y = -radius; y <= radius; y++) {
+		for (let x = -radius; x <= radius; x++) {
+			const hexTilePosition = new HexTilePosition({x, y});
 
-			const circle: Circle = {
-				center,
-				radius,
-			};
+			// Sprawdzanie, czy punkt należy do głównego okręgu
+			if (checkIfPointIsInsideOfCircle(hexTilePosition.real, mainCircle) >= 0) {
+				// Ustawianie typu terenu zgodnie z szumem Perlin
+				const perlinValue = generatePerlinNoise(
+					(hexTilePosition.real.x + perlinOffsetX) * perlinScale,
+					(hexTilePosition.real.y + perlinOffsetY) * perlinScale,
+				);
+				console.log(perlinValue);
+				const landType = perlinValue > 0 ? "dirt" : mainLandType;
 
-			return {
-				circle,
-				landType,
-			};
-		});
+				const hexTile: HexTile = new Tile(
+					{
+						landType,
+					},
+					hexTilePosition,
+				);
 
-	/**
-	 * TODO: The safe boundaries can be smaller than 2. Find the exact safe boundaries using math.
-	 */
-	const minX =
-		2 *
-		Math.floor(
-			Math.min(...circleWithLandTypes.map(({circle: {center, radius}}) => center.x - radius)),
-		);
-
-	const maxX =
-		2 *
-		Math.ceil(
-			Math.max(...circleWithLandTypes.map(({circle: {center, radius}}) => center.x + radius)),
-		);
-
-	const minY =
-		2 *
-		Math.floor(
-			Math.min(...circleWithLandTypes.map(({circle: {center, radius}}) => center.y - radius)),
-		);
-
-	const maxY =
-		2 *
-		Math.ceil(
-			Math.max(...circleWithLandTypes.map(({circle: {center, radius}}) => center.y + radius)),
-		);
-
-	for (let y = minY; y <= maxY; y++) {
-		for (let x = minX; x <= maxX; x++) {
-			const hexTilePosition = new HexTilePosition({
-				x,
-				y,
-			});
-
-			const matchedCircleWithLandTypes = circleWithLandTypes.filter(
-				({circle}) => checkIfPointIsInsideOfCircle(hexTilePosition.real, circle) >= 0,
-			);
-
-			const landTypePrevalences = matchedCircleWithLandTypes.reduce<
-				Readonly<Record<HexTile["data"]["landType"], number>>
-			>(
-				(accumulator, {landType}) => {
-					return {
-						...accumulator,
-						[landType]: accumulator[landType] + 1,
-					};
-				},
-				{
-					dirt: 0,
-					water: 0,
-				},
-			);
-
-			if (landTypePrevalences.dirt === 0 && landTypePrevalences.water === 0) {
-				continue;
+				tiles.push(hexTile);
 			}
-
-			const landTypeToUse =
-				landTypePrevalences.dirt > landTypePrevalences.water
-					? "dirt"
-					: landTypePrevalences.dirt < landTypePrevalences.water
-						? "water"
-						: Math.random() < 0.5
-							? "dirt"
-							: "water";
-
-			const hexTile: HexTile = new Tile(
-				{
-					landType: landTypeToUse,
-				},
-				hexTilePosition,
-			);
-
-			tiles.push(hexTile);
 		}
 	}
 
