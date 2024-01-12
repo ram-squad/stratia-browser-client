@@ -8,4 +8,5 @@ export const entityFromJSONSchema = Zod.object({
 	maximalHealthPoints: Zod.number(),
 	position: pointFromJSONSchema,
 	speedPerSecond: Zod.number(),
+	targetPosition: pointFromJSONSchema.nullable(),
 }).readonly();

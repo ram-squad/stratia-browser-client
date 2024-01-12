@@ -15,6 +15,17 @@ export class HexTilePosition implements TilePosition {
 		this.inGrid = inGrid;
 	}
 
+	public static createFromRealPosition(realPosition: Point): HexTilePosition {
+		const x = Math.round((realPosition.x / 3 ** 0.5) * 2);
+
+		const y = realPosition.y - calculateModuloRespectiveToDividend(x, 2) / 2;
+
+		return new HexTilePosition({
+			x: Math.round(x),
+			y: Math.round(y),
+		});
+	}
+
 	public goBottom(): HexTilePosition {
 		return new HexTilePosition({
 			x: this.inGrid.x,
