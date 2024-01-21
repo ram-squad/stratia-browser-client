@@ -22,7 +22,7 @@ jobs:
       SSH_DEPLOYMENT_DOCKER_SWARM_SERVICE_NAME: ${{secrets.SSH_DEPLOYMENT_DOCKER_SWARM_SERVICE_NAME}}
     steps:
       - name: Deploy to Docker Swarm
-        uses: appleboy/ssh-action@v1.0.2
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{env.SSH_DEPLOYMENT_HOST}}
           username: ${{env.SSH_DEPLOYMENT_USERNAME}}
