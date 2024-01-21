@@ -41,7 +41,7 @@ export const createBoardStateHook = createCreateSvelteHook<
 	BoardStateHookState,
 	BoardStateHookReturnValue
 >({
-	computeHookReturnValue: (hookState) => hookState.api,
+	computeHookReturnValue: (hookState): BoardStateHookReturnValue => hookState.api,
 	computeInitialHookState: ({createHookArgs}): BoardStateHookState => {
 		const [{dispatchEvent}] = createHookArgs;
 
@@ -139,5 +139,5 @@ export const createBoardStateHook = createCreateSvelteHook<
 			},
 		};
 	},
-	computeNewHookState: ({oldHookState}) => oldHookState,
+	computeNewHookState: ({oldHookState}): BoardStateHookState => oldHookState,
 });
