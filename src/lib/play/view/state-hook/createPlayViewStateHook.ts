@@ -46,7 +46,7 @@ function computeEntitySelection(
 	entities: readonly Entity[],
 	entityToSelectID: Entity["id"],
 ): EntitySelection | null {
-	const entityToSelect = entities.find((entity) => entity.id === entityToSelectID);
+	const entityToSelect = entities.find((entity): boolean => entity.id === entityToSelectID);
 
 	if (entityToSelect === undefined) {
 		return null;
@@ -118,8 +118,8 @@ function setupPlayViewStateHookIntervals({
 function computeEntityWithSelectionStatuses(
 	entities: readonly Entity[],
 	entitySelection: EntitySelection | null,
-) {
-	return entities.map((entity) => {
+): readonly EntityWithSelectionStatus[] {
+	return entities.map((entity): EntityWithSelectionStatus => {
 		const isSelected = entitySelection !== null && entity.id === entitySelection.entity.id;
 
 		return {

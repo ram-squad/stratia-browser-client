@@ -34,7 +34,7 @@
 		"icon-click": Entity;
 	}>();
 
-	const handleIconClick = () => {
+	const handleIconClick = (): void => {
 		eventDispatcher("icon-click", entity);
 	};
 </script>

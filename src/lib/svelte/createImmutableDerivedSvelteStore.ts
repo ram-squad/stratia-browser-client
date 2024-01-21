@@ -8,7 +8,7 @@ export function createImmutableDerivedSvelteStore<StoreValue, SourceStoreValue>(
 
 	let resolveNotifyNewSubscriber: (
 		newSubscriber: SvelteStore.Subscriber<StoreValue>,
-	) => void = () => {
+	) => void = (): void => {
 		// Do nothing.
 	};
 
@@ -20,7 +20,7 @@ export function createImmutableDerivedSvelteStore<StoreValue, SourceStoreValue>(
 		let currentDerivedValue = derivedValue;
 
 		const notifySubscribers = (): void => {
-			subscribers.forEach((subscriber) => {
+			subscribers.forEach((subscriber): void => {
 				subscriber(currentDerivedValue);
 			});
 		};
@@ -42,7 +42,7 @@ export function createImmutableDerivedSvelteStore<StoreValue, SourceStoreValue>(
 		};
 	};
 
-	sourceStore.subscribe((sourceStoreValue) => {
+	sourceStore.subscribe((sourceStoreValue): void => {
 		resolveSourceStoreValue(sourceStoreValue);
 	});
 

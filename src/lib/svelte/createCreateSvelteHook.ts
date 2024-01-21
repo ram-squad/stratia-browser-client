@@ -27,7 +27,7 @@ export function createCreateSvelteHook<
 	return (...createHookArgs): ((...updateHookArgs: UpdateHookArgs) => HookReturnValue) => {
 		let updateHandler: (...updateHookArgs: UpdateHookArgs) => HookReturnValue = (
 			...initialUpdateHookArgs
-		) => {
+		): HookReturnValue => {
 			let currentState: HookState = computeInitialHookState({
 				createHookArgs,
 				initialUpdateHookArgs,
@@ -45,6 +45,6 @@ export function createCreateSvelteHook<
 			return computeHookReturnValue(currentState);
 		};
 
-		return (...updateHookArgs) => updateHandler(...updateHookArgs);
+		return (...updateHookArgs): HookReturnValue => updateHandler(...updateHookArgs);
 	};
 }

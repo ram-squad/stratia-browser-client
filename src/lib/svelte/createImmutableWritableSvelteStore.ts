@@ -8,7 +8,7 @@ export function createImmutableWritableSvelteStore<StoreValue>(
 	const subscribers = new Set<SvelteStore.Subscriber<StoreValue>>();
 
 	const notifySubscribers = (): void => {
-		subscribers.forEach((subscriber) => {
+		subscribers.forEach((subscriber): void => {
 			subscriber(currentValue);
 		});
 	};

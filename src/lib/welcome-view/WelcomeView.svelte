@@ -6,7 +6,7 @@
 
 	export let gotoPlay: (playID: string) => Promise<void>;
 
-	const handleStartNewPlayButtonClick = async () => {
+	const handleStartNewPlayButtonClick = async (): Promise<void> => {
 		const newPlay = createPlay();
 
 		savePlayToLocalStorage(newPlay);

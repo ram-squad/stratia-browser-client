@@ -3,8 +3,8 @@ import {describe, test} from "vitest";
 
 const dockerImageNodeVersion = "19.7";
 
-describe("Docker image", () => {
-	test("builds", async () => {
+describe("Docker image", (): void => {
+	test("builds", async (): Promise<void> => {
 		await new testcontainers.GenericContainerBuilder(".", "Dockerfile")
 			.withBuildArgs({
 				NODE_VERSION: dockerImageNodeVersion,
@@ -13,8 +13,8 @@ describe("Docker image", () => {
 	}, 100000);
 });
 
-describe("Docker container", () => {
-	test("starts", async () => {
+describe("Docker container", (): void => {
+	test("starts", async (): Promise<void> => {
 		const container = await new testcontainers.GenericContainerBuilder(".", "Dockerfile")
 			.withBuildArgs({
 				NODE_VERSION: dockerImageNodeVersion,
