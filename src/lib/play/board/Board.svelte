@@ -8,10 +8,8 @@
 	import type {Dimensions} from "$lib/math/dimensions/Dimensions.ts";
 	import type {Point} from "$lib/math/point/Point.ts";
 	import type {EntityWithSelectionStatus} from "$lib/play/board/entity-with-selection-status/EntityWithSelectionStatus.ts";
-	import {createEntityClickedHook} from "$lib/play/board/hooks/entity-clicked/createEntityClickedHook.ts";
-	import {createMousePositionChangedHook} from "$lib/play/board/hooks/mouse-position-changed/createMousePositionChangedHook.ts";
-	import {createObserveDimensionsHook} from "$lib/play/board/hooks/observe-dimensions/createObserveDimensionsHook.ts";
 	import BoardObjectList from "$lib/play/board/object-list/BoardObjectList.svelte";
+	import {createBoardStateHook} from "$lib/play/board/state-hook/createBoardStateHook.ts";
 	import type {Camera} from "$lib/play/camera/Camera.ts";
 	import type {Entity} from "$lib/play/entity/Entity.ts";
 	import EntityOnBoard from "$lib/play/entity/on-board/EntityOnBoard.svelte";
@@ -42,16 +40,19 @@
 		"mouse-scrolled": number;
 	}>();
 
-	const handleScroll = (event: WheelEvent) => {
-		dispatchEvent("mouse-scrolled", event.deltaY);
-	};
+	const boardStateHook = createBoardStateHook({
+		dispatchEvent,
+	});
 
-	const {handleBoardClick, handleEntityClick} = createEntityClickedHook(dispatchEvent);
-
-	const {handleMouseenter, handleMouseleave, handleMousemove} =
-		createMousePositionChangedHook(dispatchEvent);
-
-	const observeDimensionsHook = createObserveDimensionsHook(dispatchEvent);
+	const {
+		handleBoardClick,
+		handleEntityClick,
+		handleMouseenter,
+		handleMouseleave,
+		handleMousemove,
+		handleScroll,
+		observeBoardDimensions,
+	} = boardStateHook();
 </script>
 
 <div
@@ -62,7 +63,7 @@
 	on:mousemove={handleMousemove}
 	on:wheel={handleScroll}
 	role="presentation"
-	use:observeDimensionsHook
+	use:observeBoardDimensions
 >
 	<BoardObjectList {camera}>
 		<svelte:fragment let:layoutStylesCalculationPrecission>
