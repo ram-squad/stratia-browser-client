@@ -6,7 +6,7 @@ import {Tile} from "$lib/play/tile/Tile.ts";
 import {HexTilePosition} from "$lib/play/tile/shapes/hex/tile/position/HexTilePosition.ts";
 import type {HexTile} from "../tile/HexTile.ts";
 
-export function basicGenerateHexTiles(): readonly HexTile[] {
+export function basicGenerateHexTiles(radius): readonly HexTile[] {
 	const tiles: HexTile[] = [];
 
 	// Wielki okrąg o jednym typie terenu
@@ -14,8 +14,6 @@ export function basicGenerateHexTiles(): readonly HexTile[] {
 		x: 0,
 		y: 0,
 	};
-
-	const radius = 20;
 
 	const mainCircle: Circle = {
 		center,
@@ -46,13 +44,15 @@ export function basicGenerateHexTiles(): readonly HexTile[] {
 					(hexTilePosition.real.y + perlinOffsetY) * perlinScale,
 				);
 
-				console.log(perlinValue);
+				//console.log(perlinValue);
 
 				const landType = perlinValue > 0 ? "dirt" : mainLandType;
+				const entity = "None"
 
 				const hexTile: HexTile = new Tile(
 					{
 						landType,
+						entity
 					},
 					hexTilePosition,
 				);
@@ -61,6 +61,26 @@ export function basicGenerateHexTiles(): readonly HexTile[] {
 			}
 		}
 	}
-
+	console.log(tiles)
+	//console.log(getNeighbours(tiles[0],tiles))
+	tiles.forEach(element => {
+		// add permanent land lines so bases can be set up symmetrically always
+		if(element.position.inGrid.x==0 || element.position.inGrid.y==0)
+		{
+			element.data.landType = "dirt"
+		}
+	});
+	//make map symmetrical so chances are balanced
+	tiles.forEach(element1 => {
+		if(element1.position.inGrid.x<=0)
+		{
+			tiles.forEach(element2 => {
+				if(element1.position.inGrid.y===element2.position.inGrid.y && element1.position.inGrid.x==-element2.position.inGrid.x)
+				{
+					element2.data.landType=element1.data.landType
+				}
+			});
+		}
+	});
 	return tiles;
 }

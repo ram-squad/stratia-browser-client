@@ -1,11 +1,22 @@
 <svelte:options immutable={true} />
 
 <script lang="ts" strictEvents>
+	import {createPlay} from "$lib/play/creation/createPlay.ts";
+	import {savePlayToLocalStorage} from "$lib/play/local-storage/savePlayToLocalStorage.ts";
 
-	export let gotoInitView: () => Promise<void>;
+	export let gotoPlay: (playID: string) => Promise<void>;
+	export let gotoWelcomeView: () => Promise<void>;
 
-	const handleGoToInitViewButtonClick = async () => {
-		await gotoInitView();
+	const handleStartNewPlayButtonClick = async () => {
+		const newPlay = createPlay(5);
+
+		savePlayToLocalStorage(newPlay);
+
+		await gotoPlay(newPlay.id);
+	};
+
+	const handleGoToWelcomeViewButtonClick = async () => {
+		await gotoWelcomeView();
 	};
 </script>
 
@@ -15,8 +26,28 @@
 			<h1 class="game-title-text">Stratia</h1>
 			<button
 				class="menu-button slide-inside"
-				on:click={handleGoToInitViewButtonClick}
-				type="button">Set Up New Game</button
+				on:click={handleStartNewPlayButtonClick}
+				type="button">Start a new game</button
+			>
+			<button
+				class="menu-button slide-inside"
+				on:click={handleStartNewPlayButtonClick}
+				type="button">Some option jeden</button
+			>
+			<button
+				class="menu-button slide-inside"
+				on:click={handleStartNewPlayButtonClick}
+				type="button">Some option dwa</button
+			>
+			<button
+				class="menu-button slide-inside"
+				on:click={handleStartNewPlayButtonClick}
+				type="button">Some option trzy</button
+			>
+			<button
+				class="menu-button slide-inside"
+				on:click={handleGoToWelcomeViewButtonClick}
+				type="button">Go Back</button
 			>
 		</div>
 	</div>

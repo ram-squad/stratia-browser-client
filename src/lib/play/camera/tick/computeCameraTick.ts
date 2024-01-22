@@ -15,14 +15,32 @@ export function computeCameraTick(
 	if (boardMousePositionPixels === null || boardDimensionsPixels === null) {
 		return camera;
 	}
-
-	const mousePositionRelativeToBoardCenterAngleRadians =
+	const mousePosition = {x:0,y:0}
+	console.log("camera.zoomFactor")
+	console.log(camera.zoomFactor)
+	console.log("camera.position.x")
+	console.log(boardMousePositionPixels.x - boardDimensionsPixels.width / 2)
+	console.log("camera.position.y")
+	console.log(boardMousePositionPixels.y - boardDimensionsPixels.height / 2)
+	console.log("mousePosition.x")
+	mousePosition.x = boardMousePositionPixels.x - boardDimensionsPixels.width/2
+	console.log(mousePosition.x)
+	console.log("mousePosition.y")
+	mousePosition.y = boardMousePositionPixels.y - boardDimensionsPixels.height / 2
+	console.log(mousePosition.y)
+	console.log("camera.hoveredTilePosition.x")
+	console.log(camera.hoveredTilePosition.x)
+	console.log("camera.hoveredTilePosition.y")
+	console.log(camera.hoveredTilePosition.y)
+	/*const mousePositionRelativeToBoardCenterAngleRadians =
 		Math.atan2(
 			boardMousePositionPixels.y - boardDimensionsPixels.height / 2,
 			boardMousePositionPixels.x - boardDimensionsPixels.width / 2,
 		) +
 		(3 * Math.PI) / 2;
-
+		console.log(boardMousePositionPixels.y - boardDimensionsPixels.height / 2)
+		console.log(boardMousePositionPixels.x - boardDimensionsPixels.width/2)*/
+		/*
 	const mousePositionDistanceFromBoardEdgePixels = Math.min(
 		boardMousePositionPixels.x,
 		boardMousePositionPixels.y,
@@ -36,15 +54,25 @@ export function computeCameraTick(
 	) {
 		return camera;
 	}
-
-	const cameraMovementSpeedPerSecond =
+*/
+	/*const cameraMovementSpeedPerSecond =
 		cameraSpeedAtBoardEdgePerSecond -
 		(cameraSpeedAtBoardEdgePerSecond * mousePositionDistanceFromBoardEdgePixels) /
-			maximalMousePositionDistanceFromBoardEdgeToMoveCameraPixels;
-
+			maximalMousePositionDistanceFromBoardEdgeToMoveCameraPixels;*/
+	let hoveredTilePositionX = Math.round(mousePosition.x/172.5/camera.zoomFactor*200)
+	let hoveredTilePositionY;
+	if(hoveredTilePositionX%2==0)
+	{
+		hoveredTilePositionY = Math.round(mousePosition.y/200/camera.zoomFactor*200)
+	}
+	else
+	{
+		hoveredTilePositionY = Math.round(mousePosition.y/200/camera.zoomFactor*200-0.5)
+	}
 	return {
 		...camera,
-		position: {
+		position:{x:camera.position.x,y:camera.position.y},
+		hoveredTilePosition:{x:hoveredTilePositionX,y:hoveredTilePositionY}/*: {
 			x:
 				camera.position.x -
 				Math.sin(mousePositionRelativeToBoardCenterAngleRadians) *
@@ -55,6 +83,6 @@ export function computeCameraTick(
 				Math.cos(mousePositionRelativeToBoardCenterAngleRadians) *
 					cameraMovementSpeedPerSecond *
 					deltaTimeSeconds,
-		},
+		},*/
 	};
 }

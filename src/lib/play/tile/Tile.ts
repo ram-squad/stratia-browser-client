@@ -16,7 +16,7 @@ export class Tile<TilePositionInTile extends TilePosition> {
 		this.position = position;
 	}
 
-	public readonly data: TileData;
+	public data: TileData;
 
 	public get id(): string {
 		return this.position.id;

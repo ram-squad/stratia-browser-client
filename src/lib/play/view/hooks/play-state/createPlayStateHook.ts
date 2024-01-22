@@ -15,6 +15,10 @@ const intialCamera: Camera = {
 		x: 0,
 		y: 0,
 	},
+	hoveredTilePosition: {
+		x: 0,
+		y: 0,
+	},
 	zoomFactor: 20,
 };
 

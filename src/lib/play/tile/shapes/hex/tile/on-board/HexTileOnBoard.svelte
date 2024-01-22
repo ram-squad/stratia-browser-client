@@ -5,6 +5,10 @@
 	import type {HexTileNeighbors} from "$lib/play/tile/shapes/hex/tile/HexTileNeighbors.ts";
 	import {computeHexSideStrokeColors} from "$lib/play/tile/shapes/hex/tile/side/computeHexSideStrokeColors.ts";
 
+	export let choosenTilePositionX;
+
+	export let choosenTilePositionY;
+
 	export let tile: HexTile;
 
 	export let neighbors: HexTileNeighbors;
@@ -27,7 +31,7 @@
 
 	$: cellTransformStyle = `translate(${cellTransformStyleX}, ${cellTransformStyleY})`;
 
-	$: svgFillStyle = (
+	$: svgFillStyle = choosenTilePositionX == tile.position.inGrid.x && choosenTilePositionY == tile.position.inGrid.y ? "yellow":(
 		{
 			dirt: "brown",
 			water: "blue",

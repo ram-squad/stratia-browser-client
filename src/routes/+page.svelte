@@ -4,9 +4,9 @@
 	import * as AppNavigation from "$app/navigation";
 	import WelcomeView from "$lib/welcome-view/WelcomeView.svelte";
 
-	const gotoPlay = async (playID: string) => {
-		await AppNavigation.goto(`/plays/${playID}`);
+	const gotoInitView = async () => {
+		await AppNavigation.goto(`/init-view`);
 	};
 </script>
 
-<WelcomeView {gotoPlay} />
+<WelcomeView {gotoInitView} />

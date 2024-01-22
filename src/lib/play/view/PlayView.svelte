@@ -88,9 +88,14 @@
 			on:mouse-scrolled={handleBoardMouseScrolled}
 			{tileWithNeighbors}
 		>
-			<svelte:fragment let:layoutStylesCalculationPrecission let:neighbors let:tile slot="tile">
-				<HexTileOnBoard {layoutStylesCalculationPrecission} {neighbors} {tile} />
-			</svelte:fragment>
+		<svelte:fragment let:layoutStylesCalculationPrecission let:neighbors let:tile slot="tile" >
+			<HexTileOnBoard 
+			{layoutStylesCalculationPrecission} 
+			{neighbors} 
+			{tile} 
+			choosenTilePositionX={$cameraStore.hoveredTilePosition.x} 
+			choosenTilePositionY={$cameraStore.hoveredTilePosition.y}/>
+		</svelte:fragment>
 		</Board>
 	</div>
 	<div>
@@ -115,7 +120,7 @@
 	.play-view {
 		display: grid;
 		grid-template-areas: "board" "selected-entity-bar";
-		grid-template-rows: 1fr 10rem;
+		grid-template-rows: 1fr 3rem;
 	}
 
 	.play-view__selected-entity-bar-wrapper {

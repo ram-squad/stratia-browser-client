@@ -3,7 +3,7 @@ import {generateNewPlayID} from "$lib/play/creation/generateNewPlayID.ts";
 import {generateNewEntityID} from "$lib/play/entity/creation/generateNewEntityID.ts";
 import {basicGenerateHexTiles} from "$lib/play/tile/shapes/hex/generation/basicGenerateHexTiles.ts";
 
-export function createPlay(): Play {
+export function createPlay(radius:Number): Play {
 	return {
 		entities: [
 			{
@@ -30,6 +30,6 @@ export function createPlay(): Play {
 			},
 		],
 		id: generateNewPlayID(),
-		tiles: basicGenerateHexTiles(),
+		tiles: basicGenerateHexTiles(radius),
 	};
 }
