@@ -2,14 +2,45 @@
 
 <script lang="ts" strictEvents>
 	import type {EntitySelection} from "$lib/play/entity/selection/EntitySelection.ts";
+	import type { HexTile } from "$lib/play/tile/shapes/hex/tile/HexTile.ts";
 
-	export let entitySelection: EntitySelection | null;
+	//export let entitySelection: EntitySelection | null;
+	export let debugWhoseTurn:String;
+	export let debugHoveredTile: HexTile | null;
+	export let debugClickedTile: HexTile | null;
+	export let debugSelectedEntityTile: HexTile | null;
+
+	//export let selectedTile: HexTile | null;
 </script>
 
 <div>
-	{#if entitySelection === null}
-		No entity selected.
+	<div>
+		{#if debugWhoseTurn === null || debugWhoseTurn === ""}
+		No one's turn
 	{:else}
-		Selected entity: {entitySelection.entity.id}
+		Turn of: {debugWhoseTurn} {debugWhoseTurn=="player1"?"red":"green"}
 	{/if}
+	</div>
+	<div>
+		{#if debugHoveredTile === null}
+		No tile hovered.
+	{:else}
+		Hovered tile: X: {debugHoveredTile.position.inGrid.x} Y: {debugHoveredTile.position.inGrid.y}
+	{/if}
+	</div>
+	<div>
+		{#if debugClickedTile === null && debugClickedTile !== undefined}
+		No tile clicked.
+	{:else}
+		Clicked tile: X: {debugClickedTile.position.inGrid.x} Y: {debugClickedTile.position.inGrid.y}
+	{/if}
+	</div>
+	<div>
+		{#if debugSelectedEntityTile === null && debugSelectedEntityTile !== undefined}
+		No tile with entity clicked.
+	{:else}
+		Clicked tile with entity: X: {debugSelectedEntityTile.position.inGrid.x} Y: {debugSelectedEntityTile.position.inGrid.y}
+	{/if}
+	</div>
+	
 </div>

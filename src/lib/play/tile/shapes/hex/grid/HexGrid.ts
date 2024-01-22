@@ -52,6 +52,19 @@ export class HexGrid {
 		return hexTile;
 	}
 
+	public setHexTile(targetHexTilePosition: HexTilePosition, newHexTile:HexTile): HexTile | null {
+		const hexTilesRow = this.hexTilesMap.get(targetHexTilePosition.inGrid.y);
+
+		if (hexTilesRow === undefined) {
+			return null;
+		}
+
+
+		if (hexTilesRow.get(targetHexTilePosition.inGrid.x) !== undefined) {
+			hexTilesRow.set(targetHexTilePosition.inGrid.x,newHexTile);
+		}
+	}
+
 	public getHexTileWithNeighbors(
 		targetHexTilePosition: HexTilePosition,
 	): HexTileWithNeighbors | null {
@@ -97,7 +110,7 @@ export class HexGrid {
 		return newHexTilesRow;
 	}
 
-	private readonly hexTilesMap: ReadonlyMap<number, ReadonlyMap<number, HexTile>>;
+	private hexTilesMap: Map<number, Map<number, HexTile>>;
 
 	public *iterateHexTiles(): Iterable<HexTile> {
 		for (const hexTilesRow of this.hexTilesMap.values()) {

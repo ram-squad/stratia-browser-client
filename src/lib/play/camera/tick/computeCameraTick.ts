@@ -15,7 +15,10 @@ export function computeCameraTick(
 	if (boardMousePositionPixels === null || boardDimensionsPixels === null) {
 		return camera;
 	}
-	const mousePosition = {x:0,y:0}
+	let mousePosition = {x:0,y:0}
+	mousePosition.x = boardMousePositionPixels.x - boardDimensionsPixels.width/2
+	mousePosition.y = boardMousePositionPixels.y - boardDimensionsPixels.height / 2
+	/*// DEBUG
 	console.log("camera.zoomFactor")
 	console.log(camera.zoomFactor)
 	console.log("camera.position.x")
@@ -23,15 +26,14 @@ export function computeCameraTick(
 	console.log("camera.position.y")
 	console.log(boardMousePositionPixels.y - boardDimensionsPixels.height / 2)
 	console.log("mousePosition.x")
-	mousePosition.x = boardMousePositionPixels.x - boardDimensionsPixels.width/2
 	console.log(mousePosition.x)
 	console.log("mousePosition.y")
-	mousePosition.y = boardMousePositionPixels.y - boardDimensionsPixels.height / 2
 	console.log(mousePosition.y)
 	console.log("camera.hoveredTilePosition.x")
 	console.log(camera.hoveredTilePosition.x)
 	console.log("camera.hoveredTilePosition.y")
 	console.log(camera.hoveredTilePosition.y)
+	*/
 	/*const mousePositionRelativeToBoardCenterAngleRadians =
 		Math.atan2(
 			boardMousePositionPixels.y - boardDimensionsPixels.height / 2,

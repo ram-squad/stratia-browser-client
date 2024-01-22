@@ -12,6 +12,8 @@
 	import {createPlayStateHook} from "$lib/play/view/hooks/play-state/createPlayStateHook.ts";
 	import SelectedEntityBar from "$lib/play/view/selected-entity-bar/SelectedEntityBar.svelte";
 	import {onDestroy} from "svelte";
+	import { HexTilePosition } from "../tile/shapes/hex/tile/position/HexTilePosition.ts";
+	import type { HexTile } from "../tile/shapes/hex/tile/HexTile.ts";
 
 	export let playID: string;
 
@@ -72,11 +74,45 @@
 	$: hexGrid = new HexGrid(playTiles);
 
 	$: tileWithNeighbors = Array.from(hexGrid.iterateHexTilesWithNeighbors());
+	let whoseTurn:String= "player1";
+	let clickedTile:HexTile|null;
+	let selectedEntityTile:HexTile|null;
+	function handleClicking() {
+    console.log('Left mouse button clicked!');
+	if(hexGrid.getHexTile(new HexTilePosition({x:$cameraStore.hoveredTilePosition.x,y:$cameraStore.hoveredTilePosition.y}))!=undefined)
+	{
+		clickedTile=hexGrid.getHexTile(new HexTilePosition({x:$cameraStore.hoveredTilePosition.x,y:$cameraStore.hoveredTilePosition.y}))
+		console.log("I clicked tile below:!")
+		console.log(clickedTile)
+		if(clickedTile!=null)
+		{
+			if(clickedTile?.data.entity!="None")
+			{
+				selectedEntityTile=clickedTile
+				//clickedTile.data.entity = "None" // test if set works by clicking any hex entity and seeing if it disappears
+				hexGrid.setHexTile({x:$cameraStore.hoveredTilePosition.x,y:$cameraStore.hoveredTilePosition.y},clickedTile)
+			}
+		}
+		
+	}
+	}
+	// Attach the event listener to the window
+	window.addEventListener('click', handleClicking);
+
+// Cleanup the event listener when the component is destroyed
+onDestroy(() => {
+  window.removeEventListener('click', handleClicking);
+});
 </script>
 
 <main class="play-view">
 	<div class="play-view__selected-entity-bar-wrapper">
-		<SelectedEntityBar entitySelection={$entitySelectionStore} />
+		<SelectedEntityBar 
+		debugWhoseTurn = {whoseTurn}
+		debugClickedTile = {clickedTile!=undefined?clickedTile:null} 
+		debugHoveredTile={hexGrid.getHexTile(new HexTilePosition({x:$cameraStore.hoveredTilePosition.x,y:$cameraStore.hoveredTilePosition.y}))} 
+		debugSelectedEntityTile ={selectedEntityTile!=undefined?selectedEntityTile:null} 
+		/>
 	</div>
 	<div class="play-view__board-wrapper">
 		<Board
@@ -93,6 +129,7 @@
 			{layoutStylesCalculationPrecission} 
 			{neighbors} 
 			{tile} 
+			selectedEntityTile={selectedEntityTile}
 			choosenTilePositionX={$cameraStore.hoveredTilePosition.x} 
 			choosenTilePositionY={$cameraStore.hoveredTilePosition.y}/>
 		</svelte:fragment>
@@ -120,11 +157,18 @@
 	.play-view {
 		display: grid;
 		grid-template-areas: "board" "selected-entity-bar";
-		grid-template-rows: 1fr 3rem;
+		grid-template-rows: 1fr 5rem;
+		border-width: 9px;
+		background-color: rgb(26, 26, 26);
 	}
 
 	.play-view__selected-entity-bar-wrapper {
 		grid-area: selected-entity-bar;
+		color: yellow;
+		border: solid;
+		border-color: yellow;
+		background-color: black;
+		text-align: center;
 	}
 
 	.play-view__board-wrapper {

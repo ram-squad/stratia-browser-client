@@ -48,10 +48,14 @@ export function basicGenerateHexTiles(radius): readonly HexTile[] {
 
 				const landType = perlinValue > 0 ? "dirt" : mainLandType;
 				const entity = "None"
+				const building = "None"
+				const ownership = "None"
 
 				const hexTile: HexTile = new Tile(
 					{
 						landType,
+						building,
+						ownership,
 						entity
 					},
 					hexTilePosition,
@@ -69,8 +73,25 @@ export function basicGenerateHexTiles(radius): readonly HexTile[] {
 		{
 			element.data.landType = "dirt"
 		}
+		//and place player1 base on left, and player2 base on right
+		if(element.position.inGrid.x==-radius && element.position.inGrid.y==0){
+			element.data.ownership = "player1"
+			element.data.building = "capital"
+		}
+		if(element.position.inGrid.x==radius && element.position.inGrid.y==0){
+			element.data.ownership = "player2"
+			element.data.building = "capital"
+		}
+		if(element.position.inGrid.x==radius-1 && element.position.inGrid.y==0){
+			element.data.ownership = "player2"
+			element.data.entity = "recruit"
+		}
+		if(element.position.inGrid.x==-radius+1 && element.position.inGrid.y==0){
+			element.data.ownership = "player1"
+			element.data.entity = "recruit"
+		}
 	});
-	//make map symmetrical so chances are balanced
+	//make map symmetrical so chances are balanced 
 	tiles.forEach(element1 => {
 		if(element1.position.inGrid.x<=0)
 		{

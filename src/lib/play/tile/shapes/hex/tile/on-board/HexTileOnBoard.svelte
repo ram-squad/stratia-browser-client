@@ -9,6 +9,8 @@
 
 	export let choosenTilePositionY;
 
+	export let selectedEntityTile: HexTile | null = null;
+
 	export let tile: HexTile;
 
 	export let neighbors: HexTileNeighbors;
@@ -31,9 +33,13 @@
 
 	$: cellTransformStyle = `translate(${cellTransformStyleX}, ${cellTransformStyleY})`;
 
-	$: svgFillStyle = choosenTilePositionX == tile.position.inGrid.x && choosenTilePositionY == tile.position.inGrid.y ? "yellow":(
+	$: svgFillStyle = choosenTilePositionX == tile.position.inGrid.x && choosenTilePositionY == tile.position.inGrid.y ? "yellow": 
+	tile.data.ownership == "None" && tile.data.landType == "dirt"? "grey":
+	tile.data.ownership == "player1" && tile.data.landType == "dirt"? "red":
+	tile.data.ownership == "player2" && tile.data.landType == "dirt"? "green":
+	(
 		{
-			dirt: "brown",
+			dirt: "grey",
 			water: "blue",
 		} as const
 	)[tile.data.landType];
@@ -68,6 +74,17 @@
 			/>
 		</g>
 	</svg>
+	{#if tile.data.building === "capital"}
+  		<div class="building"></div>
+	{/if}
+	{#if tile.data.entity === "recruit"}
+  		<div class="recruit"></div>
+	{/if}
+	{#if selectedEntityTile !== null}
+		{#if (selectedEntityTile.position.inGrid.x,selectedEntityTile.position.inGrid.y) !== (tile.position.inGrid.x,tile.position.inGrid.y)}
+			<div class="canMoveDot"></div>
+		{/if}
+	{/if}
 </li>
 
 <style lang="scss">
@@ -76,5 +93,38 @@
 		left: 50%;
 		position: absolute;
 		top: 50%;
+	}
+	.building {
+		height: 70%;
+  width: 60%;
+  background: url('https://krita-artists.org/uploads/default/original/3X/1/1/1146000c972c87c1d9d359fe8fb73ce2839a826f.png');
+  background-color: inherit;
+  background-repeat: no-repeat;
+  background-size: cover; 
+  position: absolute;
+  margin-left: 20%;
+  margin-top: 10%;
+	}
+	.recruit {
+		height: 70%;
+  width: 60%;
+  background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2b524626-861a-4a6a-ae53-bc8572fa8f06/ddkbb7f-56f05503-f161-4ec4-bf69-4c0b56f44990.png/v1/fill/w_512,h_512/pixel_art_farmer_by_goodgame128_ddkbb7f-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTEyIiwicGF0aCI6IlwvZlwvMmI1MjQ2MjYtODYxYS00YTZhLWFlNTMtYmM4NTcyZmE4ZjA2XC9kZGtiYjdmLTU2ZjA1NTAzLWYxNjEtNGVjNC1iZjY5LTRjMGI1NmY0NDk5MC5wbmciLCJ3aWR0aCI6Ijw9NTEyIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.UEawn7HaHQcrJtxDMPfjWj_MQESUjDRZyoKUoXfZrqE');
+  background-color: inherit;
+  background-repeat: no-repeat;
+  background-size: cover; 
+  position: absolute;
+  margin-left: 20%;
+  margin-top: 10%;
+	}
+	.canMoveDot{
+		height: 70%;
+  width: 60%;
+  background: url('https://i.pinimg.com/originals/e2/29/50/e22950b0a26db427c651dccba60ab62c.png');
+  background-color: inherit;
+  background-repeat: no-repeat;
+  background-size: cover; 
+  position: absolute;
+  margin-left: 20%;
+  margin-top: 10%;
 	}
 </style>
