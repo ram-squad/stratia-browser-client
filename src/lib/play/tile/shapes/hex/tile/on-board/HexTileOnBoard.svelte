@@ -43,6 +43,28 @@
 			water: "blue",
 		} as const
 	)[tile.data.landType];
+	function isTileNeighbourAndCanMove(selectedEntityTile, tile) {
+		if (selectedEntityTile.position.inGrid.x % 2 === 0) {
+        return (
+            (selectedEntityTile.position.inGrid.y + 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y - 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y - 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x + 1 === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y - 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x - 1 === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x + 1 === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x - 1 === tile.position.inGrid.x)
+        )&&tile.data.landType!="water";
+    } else {
+        return (
+            (selectedEntityTile.position.inGrid.y + 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y - 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x + 1 === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x - 1 === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y+1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x + 1 === tile.position.inGrid.x) ||
+            (selectedEntityTile.position.inGrid.y+1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x - 1 === tile.position.inGrid.x)
+        )&&tile.data.landType!="water";
+    }
+	}
+
 </script>
 
 <li class="hex-board-cell" style:transform={cellTransformStyle}>
@@ -81,7 +103,7 @@
   		<div class="recruit"></div>
 	{/if}
 	{#if selectedEntityTile !== null}
-		{#if (selectedEntityTile.position.inGrid.x,selectedEntityTile.position.inGrid.y) !== (tile.position.inGrid.x,tile.position.inGrid.y)}
+		{#if (isTileNeighbourAndCanMove(selectedEntityTile, tile))}
 			<div class="canMoveDot"></div>
 		{/if}
 	{/if}
@@ -119,7 +141,8 @@
 	.canMoveDot{
 		height: 70%;
   width: 60%;
-  background: url('https://i.pinimg.com/originals/e2/29/50/e22950b0a26db427c651dccba60ab62c.png');
+  background: url('CanMoveDot.png');
+  opacity: 0.5;
   background-color: inherit;
   background-repeat: no-repeat;
   background-size: cover; 

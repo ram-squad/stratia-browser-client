@@ -14,12 +14,14 @@
 	import {onDestroy} from "svelte";
 	import { HexTilePosition } from "../tile/shapes/hex/tile/position/HexTilePosition.ts";
 	import type { HexTile } from "../tile/shapes/hex/tile/HexTile.ts";
+	import isTileNeighbourAndCanMove from "$lib/play/view/isTileNeighbourAndCanMove.ts";
 
 	export let playID: string;
 
 	let boardMousePositionPixels: null | Point = null;
 
 	let boardDimensionsPixels: Dimensions | null = null;
+	
 
 	const playStateHook = createPlayStateHook();
 
@@ -46,7 +48,6 @@
 		playEntities,
 		$entitySelectionStore,
 	);
-
 	const handleBoardMouseScrolled = (event: CustomEvent<number>) => {
 		updateZoom(event.detail);
 	};
@@ -91,6 +92,25 @@
 				selectedEntityTile=clickedTile
 				//clickedTile.data.entity = "None" // test if set works by clicking any hex entity and seeing if it disappears
 				hexGrid.setHexTile({x:$cameraStore.hoveredTilePosition.x,y:$cameraStore.hoveredTilePosition.y},clickedTile)
+			}
+			if(selectedEntityTile!=null&&selectedEntityTile!=undefined)
+			{
+				if(isTileNeighbourAndCanMove(selectedEntityTile,clickedTile))
+				{
+					// move unit and maybe capture field or kill enemy unit
+					let newClickedTile = clickedTile
+					let newSelectedEntityTile = selectedEntityTile
+					newClickedTile.data.entity=selectedEntityTile.data.entity
+					newSelectedEntityTile.data.entity="None"
+					//capture field
+					if(clickedTile.data.ownership!=selectedEntityTile.data.ownership)
+					{
+						newClickedTile.data.ownership = selectedEntityTile.data.ownership
+					}
+					hexGrid.setHexTile(clickedTile.position,newClickedTile)
+					hexGrid.setHexTile(selectedEntityTile.position,newSelectedEntityTile)
+					selectedEntityTile=null
+				}
 			}
 		}
 		

@@ -3,6 +3,7 @@
 <script lang="ts" strictEvents>
 	import type {EntitySelection} from "$lib/play/entity/selection/EntitySelection.ts";
 	import type { HexTile } from "$lib/play/tile/shapes/hex/tile/HexTile.ts";
+	import isTileNeighbourAndCanMove from "$lib/play/view/isTileNeighbourAndCanMove.ts";
 
 	//export let entitySelection: EntitySelection | null;
 	export let debugWhoseTurn:String;
