@@ -6,7 +6,10 @@
 
 	export let gotoPlay: (playID: string) => Promise<void>;
 	export let gotoWelcomeView: () => Promise<void>;
-
+		
+	const handleGoToWelcomeViewButtonClick = async () => {
+		await gotoWelcomeView();
+	};
 	const handleStartNewPlayButtonClick = async () => {
 		const newPlay = createPlay(5);
 
@@ -15,9 +18,7 @@
 		await gotoPlay(newPlay.id);
 	};
 
-	const handleGoToWelcomeViewButtonClick = async () => {
-		await gotoWelcomeView();
-	};
+	
 </script>
 
 <main>

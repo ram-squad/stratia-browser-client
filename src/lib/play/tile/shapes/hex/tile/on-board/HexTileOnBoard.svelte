@@ -4,6 +4,9 @@
 	import type {HexTile} from "$lib/play/tile/shapes/hex/tile/HexTile.ts";
 	import type {HexTileNeighbors} from "$lib/play/tile/shapes/hex/tile/HexTileNeighbors.ts";
 	import {computeHexSideStrokeColors} from "$lib/play/tile/shapes/hex/tile/side/computeHexSideStrokeColors.ts";
+	import isTileNeighbourAndCanMove from "$lib/play/view/isTileNeighbourAndCanMove.ts";
+
+	export let HexTileWhoseTurn;
 
 	export let choosenTilePositionX;
 
@@ -36,34 +39,13 @@
 	$: svgFillStyle = choosenTilePositionX == tile.position.inGrid.x && choosenTilePositionY == tile.position.inGrid.y ? "yellow": 
 	tile.data.ownership == "None" && tile.data.landType == "dirt"? "grey":
 	tile.data.ownership == "player1" && tile.data.landType == "dirt"? "red":
-	tile.data.ownership == "player2" && tile.data.landType == "dirt"? "green":
+	tile.data.ownership == "player2" && tile.data.landType == "dirt"? "lightblue":
 	(
 		{
 			dirt: "grey",
 			water: "blue",
 		} as const
 	)[tile.data.landType];
-	function isTileNeighbourAndCanMove(selectedEntityTile, tile) {
-		if (selectedEntityTile.position.inGrid.x % 2 === 0) {
-        return (
-            (selectedEntityTile.position.inGrid.y + 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y - 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y - 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x + 1 === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y - 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x - 1 === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x + 1 === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x - 1 === tile.position.inGrid.x)
-        )&&tile.data.landType!="water";
-    } else {
-        return (
-            (selectedEntityTile.position.inGrid.y + 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y - 1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x + 1 === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x - 1 === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y+1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x + 1 === tile.position.inGrid.x) ||
-            (selectedEntityTile.position.inGrid.y+1 === tile.position.inGrid.y && selectedEntityTile.position.inGrid.x - 1 === tile.position.inGrid.x)
-        )&&tile.data.landType!="water";
-    }
-	}
 
 </script>
 
@@ -100,10 +82,15 @@
   		<div class="building"></div>
 	{/if}
 	{#if tile.data.entity === "recruit"}
-  		<div class="recruit"></div>
+		{#if tile.data.entityCanMove === "true"}
+		<div class="recruit"></div>
+		{/if}
+		{#if tile.data.entityCanMove === "false"}
+		<div class="recruit" style="opacity: 0.5;"></div>
+		{/if}
 	{/if}
 	{#if selectedEntityTile !== null}
-		{#if (isTileNeighbourAndCanMove(selectedEntityTile, tile))}
+		{#if (isTileNeighbourAndCanMove(selectedEntityTile, tile, HexTileWhoseTurn))}
 			<div class="canMoveDot"></div>
 		{/if}
 	{/if}
@@ -130,7 +117,7 @@
 	.recruit {
 		height: 70%;
   width: 60%;
-  background: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2b524626-861a-4a6a-ae53-bc8572fa8f06/ddkbb7f-56f05503-f161-4ec4-bf69-4c0b56f44990.png/v1/fill/w_512,h_512/pixel_art_farmer_by_goodgame128_ddkbb7f-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTEyIiwicGF0aCI6IlwvZlwvMmI1MjQ2MjYtODYxYS00YTZhLWFlNTMtYmM4NTcyZmE4ZjA2XC9kZGtiYjdmLTU2ZjA1NTAzLWYxNjEtNGVjNC1iZjY5LTRjMGI1NmY0NDk5MC5wbmciLCJ3aWR0aCI6Ijw9NTEyIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.UEawn7HaHQcrJtxDMPfjWj_MQESUjDRZyoKUoXfZrqE');
+  background: url('Recruit.png');
   background-color: inherit;
   background-repeat: no-repeat;
   background-size: cover; 

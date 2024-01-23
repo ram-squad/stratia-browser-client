@@ -6,6 +6,12 @@
 	import isTileNeighbourAndCanMove from "$lib/play/view/isTileNeighbourAndCanMove.ts";
 
 	//export let entitySelection: EntitySelection | null;
+	export let	debugMoneyOfPlayer1;
+	export let	debugMoneyOfPlayer2;
+	export let	debugIncomeOfPlayer1;
+	export let	debugIncomeOfPlayer2;
+	export let	debugUpkeepOfPlayer1;
+	export let	debugUpkeepOfPlayer2;
 	export let debugWhoseTurn:String;
 	export let debugHoveredTile: HexTile | null;
 	export let debugClickedTile: HexTile | null;
@@ -16,10 +22,28 @@
 
 <div>
 	<div>
+		Money of Player 1 Red: {debugMoneyOfPlayer1}
+	</div>
+	<div>
+		Income of Player 1 Red: {debugIncomeOfPlayer1}
+	</div>
+	<div>
+		Money of Player 2 Light Blue: {debugMoneyOfPlayer2}
+	</div>
+	<div>
+		Income of Player 2 Light Blue: {debugIncomeOfPlayer2}
+	</div>
+	<div>
+		Upkeep of Player 1 Light Blue: {debugUpkeepOfPlayer1}
+	</div>
+	<div>
+		Upkeep of Player 2 Light Blue: {debugUpkeepOfPlayer2}
+	</div>
+	<div>
 		{#if debugWhoseTurn === null || debugWhoseTurn === ""}
 		No one's turn
 	{:else}
-		Turn of: {debugWhoseTurn} {debugWhoseTurn=="player1"?"red":"green"}
+		Turn of: {debugWhoseTurn=="player1"?"Player 1 Red":"Player 2 Light Blue"}
 	{/if}
 	</div>
 	<div>

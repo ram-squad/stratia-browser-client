@@ -48,6 +48,7 @@ export function basicGenerateHexTiles(radius): readonly HexTile[] {
 
 				const landType = perlinValue > 0 ? "dirt" : mainLandType;
 				const entity = "None"
+				const entityCanMove = "true"
 				const building = "None"
 				const ownership = "None"
 
@@ -56,7 +57,8 @@ export function basicGenerateHexTiles(radius): readonly HexTile[] {
 						landType,
 						building,
 						ownership,
-						entity
+						entity,
+						entityCanMove
 					},
 					hexTilePosition,
 				);
