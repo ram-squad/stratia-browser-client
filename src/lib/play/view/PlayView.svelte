@@ -176,17 +176,6 @@
 					{
 						newClickedTile.data.ownership = selectedEntityTile.data.ownership
 					}
-					if(clickedTile.data.ownership!=whoseTurn && clickedTile.data.entity=="recruit")
-					{
-						if(whoseTurn=="player1")
-						{
-							moneyOfPlayer1=moneyOfPlayer1-10
-						}
-						if(whoseTurn=="player2")
-						{
-							moneyOfPlayer2=moneyOfPlayer2-10
-						}
-					}
 					newClickedTile.data.entityCanMove="false"
 					newSelectedEntityTile.data.entityCanMove="false"
 					hexGrid.setHexTile(clickedTile.position,newClickedTile)
